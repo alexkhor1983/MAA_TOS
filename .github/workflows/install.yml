@@ -43,8 +43,8 @@ jobs:
             tag="$prefix-ci.$suffix"
           fi
 
-          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
-          echo "is_release=$is_release" | tee -a $GITHUB_OUTPUT
+          echo tag=$tag | tee -a $GITHUB_OUTPUT
+          echo is_release=$is_release | tee -a $GITHUB_OUTPUT
     outputs:
       tag: ${{ steps.set_tag.outputs.tag }}
       is_release: ${{ steps.set_tag.outputs.is_release }}
@@ -54,6 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+    
     steps:
       - uses: actions/checkout@v4
         with:
@@ -64,6 +65,7 @@ jobs:
         run: |
           mkdir -p ./update
           rsync -av --exclude='MaaCommonAssets' ./assets/ ./update/
+
 
       - uses: actions/upload-artifact@v4
         with:
@@ -77,6 +79,7 @@ jobs:
       matrix:
         arch: [aarch64, x86_64]
       fail-fast: false
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -91,11 +94,11 @@ jobs:
           out-file-path: "deps"
           extract: true
 
-      - name: Download MFAAvalonia
+      - name: Download MFAWPF
         uses: robinraju/release-downloader@v1
         with:
-          repository: SweetSmellFox/MFAAvalonia
-          fileName: MFAAvalonia*
+          repository: SweetSmellFox/MFAWPF
+          filename: MFAWPF*
           latest: true
           out-file-path: MFA
           extract: true
@@ -104,9 +107,9 @@ jobs:
         shell: bash
         run: |
           python ./install.py ${{ needs.meta.outputs.tag }}
-          cp ./MFA/MFAAvalonia.exe ./install
-          # Example URL: https://github.com/YourUsername/YourRepoName
-          jq --arg version_name "ProjectName" --arg url "https://github.com/AuthorName/RepoName" --arg version ${{ needs.meta.outputs.tag }} '. + {"name": $version_name, "url": $url,"version": $version}' ./assets/interface.json > ./install/interface.json
+          cp ./MFA/MFAWPF.exe ./install
+          # url项示例  https://github.com/SweetSmellFox/MFAWPF
+          jq --arg version_name "项目名称" --arg url ""https://github.com/作者名/仓库名"" --arg version ${{ needs.meta.outputs.tag }} '. + {"name": $version_name, "url": $url,"version": $version}' ./assets/interface.json > ./install/interface.json
 
       - uses: actions/upload-artifact@v4
         with:
@@ -120,6 +123,7 @@ jobs:
       matrix:
         arch: [aarch64, x86_64]
       fail-fast: false
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -151,6 +155,7 @@ jobs:
       matrix:
         arch: [aarch64, x86_64]
       fail-fast: false
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -177,11 +182,12 @@ jobs:
 
   android:
     needs: meta
-    runs-on: ubuntu-latest # Changed to ubuntu-latest as macos can be slower/more expensive
+    runs-on: macos-latest
     strategy:
       matrix:
         arch: [aarch64, x86_64]
       fail-fast: false
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -193,6 +199,7 @@ jobs:
           repository: MaaXYZ/MaaFramework
           fileName: "MAA-android-${{ matrix.arch }}*"
           latest: true
+          
           out-file-path: "deps"
           extract: true
 
@@ -222,5 +229,5 @@ jobs:
           done
       - uses: softprops/action-gh-release@v2
         with:
-          files: assets/*.zip
+          files: assets/*
           tag_name: ${{ needs.meta.outputs.tag }}
