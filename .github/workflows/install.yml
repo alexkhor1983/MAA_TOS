@@ -1,72 +1,226 @@
-  install:
+name: install
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - "**"
+    paths:
+      - ".github/workflows/install.yml"
+      - "assets/**"
+      - "**.py"
+  pull_request:
+    branches:
+      - "**"
+    paths:
+      - ".github/workflows/install.yml"
+      - "assets/**"
+      - "**.py"
+  workflow_dispatch:
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: set_tag
+        run: |
+          is_release=${{ startsWith(github.ref, 'refs/tags/v') }}
+          tag=$(git describe --tags --match "v*" ${{ github.ref }} || true)
+          if [[ $tag != v* ]]; then
+            tag=$(curl -sX GET "https://api.github.com/repos/${{ github.repository }}/releases/latest" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | awk '/tag_name/{print $4}' FS='["]')
+            if [[ $tag != v* ]]; then
+              tag="v0.0.0"
+            fi
+            tag=$(date "+$tag-%y%m%d-$(git rev-parse --short HEAD)")
+          fi
+          if ! $($is_release) ; then
+            prefix=${tag%-*-*}
+            suffix=${tag#$prefix-}
+            tag="$prefix-ci.$suffix"
+          fi
+
+          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
+          echo "is_release=$is_release" | tee -a $GITHUB_OUTPUT
+    outputs:
+      tag: ${{ steps.set_tag.outputs.tag }}
+      is_release: ${{ steps.set_tag.outputs.is_release }}
+
+  update:
     needs: meta
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        # Use 'include' for a clear and explicit configuration for each OS/Arch combination
-        include:
-          - runner: windows-latest
-            os_name: win
-            arch: x86_64
-          - runner: windows-latest
-            os_name: win
-            arch: aarch64
-          - runner: ubuntu-latest
-            os_name: linux
-            arch: x86_64
-          - runner: ubuntu-latest
-            os_name: linux
-            arch: aarch64
-          - runner: macos-latest
-            os_name: osx
-            arch: x86_64
-          - runner: macos-latest
-            os_name: osx
-            arch: aarch64
-            
-    # Use the 'runner' from the matrix to set the correct OS for each job
-    runs-on: ${{ matrix.runner }}
-
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
 
-      # 1. ADD THIS STEP to download the required dependency first.
+      - name: update
+        shell: bash
+        run: |
+          mkdir -p ./update
+          rsync -av --exclude='MaaCommonAssets' ./assets/ ./update/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: update
+          path: "update"
+
+  windows:
+    needs: meta
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [aarch64, x86_64]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
       - name: Download MaaFramework
         uses: robinraju/release-downloader@v1
         with:
           repository: MaaXYZ/MaaFramework
-          fileName: "MAA-${{ matrix.os_name }}-${{ matrix.arch }}*"
+          fileName: "MAA-win-${{ matrix.arch }}*"
           latest: true
-          out-file-path: "deps" # Download to the 'deps' folder as the script expects
+          out-file-path: "deps"
           extract: true
 
-      # 2. Your install script will now run successfully.
-      - name: Install Python Script
+      - name: Download MFAAvalonia
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: SweetSmellFox/MFAAvalonia
+          fileName: MFAAvalonia*
+          latest: true
+          out-file-path: MFA
+          extract: true
+
+      - name: Install
+        shell: bash
+        run: |
+          python ./install.py ${{ needs.meta.outputs.tag }}
+          cp ./MFA/MFAAvalonia.exe ./install
+          # Example URL: https://github.com/YourUsername/YourRepoName
+          jq --arg version_name "ProjectName" --arg url "https://github.com/AuthorName/RepoName" --arg version ${{ needs.meta.outputs.tag }} '. + {"name": $version_name, "url": $url,"version": $version}' ./assets/interface.json > ./install/interface.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MAAxxx-win-${{ matrix.arch }}
+          path: "install"
+
+  ubuntu:
+    needs: meta
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [aarch64, x86_64]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Download MaaFramework
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: MaaXYZ/MaaFramework
+          fileName: "MAA-linux-${{ matrix.arch }}*"
+          latest: true
+          out-file-path: "deps"
+          extract: true
+
+      - name: Install
         shell: bash
         run: |
           python ./install.py ${{ needs.meta.outputs.tag }}
 
-      # 3. Download the UI framework. Note the corrected filename logic.
-      - name: Download MFA
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MAAxxx-linux-${{ matrix.arch }}
+          path: "install"
+
+  macos:
+    needs: meta
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        arch: [aarch64, x86_64]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Download MaaFramework
         uses: robinraju/release-downloader@v1
         with:
-          repository: SweetSmellFox/MFAAvalonia
-          # The MFAAvalonia release uses 'macos' (not 'osx') and 'arm64'/'x64' (not 'aarch64'/'x86_64').
-          # We use expressions to map our matrix variables to the correct names.
-          fileName: "MFAAvalonia-*-${{ matrix.os_name == 'osx' && 'macos' || matrix.os_name }}-${{ matrix.arch == 'aarch64' && 'arm64' || 'x64' }}*"
+          repository: MaaXYZ/MaaFramework
+          fileName: "MAA-macos-${{ matrix.arch }}*"
           latest: true
-          out-file-path: "MFAAvalonia"
+          out-file-path: "deps"
           extract: true
 
-      - name: Install MFAAvalonia
+      - name: Install
         shell: bash
         run: |
-          rm -rf MFAAvalonia/resource/base/model
-          cp -r MFAAvalonia/* install
+          python ./install.py ${{ needs.meta.outputs.tag }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: MaaXXX-${{ matrix.os_name }}-${{ matrix.arch }}
+          name: MAAxxx-macos-${{ matrix.arch }}
           path: "install"
+
+  android:
+    needs: meta
+    runs-on: ubuntu-latest # Changed to ubuntu-latest as macos can be slower/more expensive
+    strategy:
+      matrix:
+        arch: [aarch64, x86_64]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Download MaaFramework
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: MaaXYZ/MaaFramework
+          fileName: "MAA-android-${{ matrix.arch }}*"
+          latest: true
+          out-file-path: "deps"
+          extract: true
+
+      - name: Install
+        shell: bash
+        run: |
+          python ./install.py ${{ needs.meta.outputs.tag }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MAAxxx-android-${{ matrix.arch }}
+          path: "install"
+
+  release:
+    if: ${{ needs.meta.outputs.is_release == 'true' }}
+    needs: [meta, windows, ubuntu, macos, android]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: assets
+
+      - run: |
+          cd assets
+          for f in *; do
+            (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
+          done
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: assets/*.zip
+          tag_name: ${{ needs.meta.outputs.tag }}
