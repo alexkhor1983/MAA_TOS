@@ -164,7 +164,7 @@ jobs:
       - name: Download MaaFramework
         uses: robinraju/release-downloader@v1
         with:
-          repository: alexkhor1983/MAA_TOS
+          repository: MaaXYZ/MaaFramework
           fileName: "MAA-macos-${{ matrix.arch }}*"
           latest: true
           out-file-path: "deps"
