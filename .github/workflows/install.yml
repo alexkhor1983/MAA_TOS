@@ -1,85 +1,66 @@
-name: install
-
-on:
-  push:
-    tags:
-      - "v*"
-    branches:
-      - "**"
-    paths:
-      - ".github/workflows/install.yml"
-      - "assets/**"
-      - "**.py"
-  pull_request:
-    branches:
-      - "**"
-    paths:
-      - ".github/workflows/install.yml"
-      - "assets/**"
-      - "**.py"
-  workflow_dispatch:
-
-jobs:
-  meta:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - id: set_tag
-        run: |
-          is_release=${{ startsWith(github.ref, 'refs/tags/v') }}
-          tag=$(git describe --tags --match "v*" ${{ github.ref }} || true)
-          if [[ $tag != v* ]]; then
-            tag=$(curl -sX GET "https://api.github.com/repos/${{ github.repository }}/releases/latest" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | awk '/tag_name/{print $4}' FS='["]')
-            if [[ $tag != v* ]]; then
-              tag="v0.0.0"
-            fi
-            tag=$(date "+$tag-%y%m%d-$(git rev-parse --short HEAD)")
-          fi
-          if ! $($is_release) ; then
-            prefix=${tag%-*-*}
-            suffix=${tag#$prefix-}
-            tag="$prefix-ci.$suffix"
-          fi
-
-          echo tag=$tag | tee -a $GITHUB_OUTPUT
-          echo is_release=$is_release | tee -a $GITHUB_OUTPUT
-    outputs:
-      tag: ${{ steps.set_tag.outputs.tag }}
-      is_release: ${{ steps.set_tag.outputs.is_release }}
-
   install:
     needs: meta
-    runs-on: macos-latest
     strategy:
-      matrix:
-        os: [win, osx, linux]
-        arch: [arm64, x64]
       fail-fast: false
+      matrix:
+        # Use 'include' for a clear and explicit configuration for each OS/Arch combination
+        include:
+          - runner: windows-latest
+            os_name: win
+            arch: x86_64
+          - runner: windows-latest
+            os_name: win
+            arch: aarch64
+          - runner: ubuntu-latest
+            os_name: linux
+            arch: x86_64
+          - runner: ubuntu-latest
+            os_name: linux
+            arch: aarch64
+          - runner: macos-latest
+            os_name: osx
+            arch: x86_64
+          - runner: macos-latest
+            os_name: osx
+            arch: aarch64
+            
+    # Use the 'runner' from the matrix to set the correct OS for each job
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
 
-      - name: Install
+      # 1. ADD THIS STEP to download the required dependency first.
+      - name: Download MaaFramework
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: MaaXYZ/MaaFramework
+          fileName: "MAA-${{ matrix.os_name }}-${{ matrix.arch }}*"
+          latest: true
+          out-file-path: "deps" # Download to the 'deps' folder as the script expects
+          extract: true
+
+      # 2. Your install script will now run successfully.
+      - name: Install Python Script
         shell: bash
         run: |
           python ./install.py ${{ needs.meta.outputs.tag }}
 
+      # 3. Download the UI framework. Note the corrected filename logic.
       - name: Download MFA
-        if: ${{ matrix.os != 'android' }}
         uses: robinraju/release-downloader@v1
         with:
           repository: SweetSmellFox/MFAAvalonia
-          fileName: "MFAAvalonia-*-${{ matrix.os }}-${{ matrix.arch }}*"
+          # The MFAAvalonia release uses 'macos' (not 'osx') and 'arm64'/'x64' (not 'aarch64'/'x86_64').
+          # We use expressions to map our matrix variables to the correct names.
+          fileName: "MFAAvalonia-*-${{ matrix.os_name == 'osx' && 'macos' || matrix.os_name }}-${{ matrix.arch == 'aarch64' && 'arm64' || 'x64' }}*"
           latest: true
           out-file-path: "MFAAvalonia"
           extract: true
 
       - name: Install MFAAvalonia
-        if: ${{ matrix.os != 'android' }}
         shell: bash
         run: |
           rm -rf MFAAvalonia/resource/base/model
@@ -87,26 +68,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: MaaXXX-${{ matrix.os }}-${{ matrix.arch }}
+          name: MaaXXX-${{ matrix.os_name }}-${{ matrix.arch }}
           path: "install"
-
-  release:
-    if: ${{ needs.meta.outputs.is_release == 'true' }}
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: assets
-
-      - run: |
-          cd assets
-          for f in *; do
-            (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
-          done
-
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: assets/*
-          tag_name: ${{ needs.meta.outputs.tag }}
-          generate_release_notes: true
