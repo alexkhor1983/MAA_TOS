@@ -13,11 +13,7 @@
             }
         }
     ],
-    "name": "MAA_TOS", //默认为null
-    "version":  "1.0.5", //默认为null
-    "mirrorchyan_rid":  "", //默认为null , 比如 M9A
-    "url":  "项目链接(目前应该只支持Github)", //默认为null , 比如 https://github.com/{Github账户}/{Github项目}
-    "custom_title": "MAA_TOS 神魔之塔助手", //默认为null, 使用该字段后，标题栏将只显示custom_title和version
+    "version":  "1.0.6",
     "resource": [
         {
             "name": "官服",
