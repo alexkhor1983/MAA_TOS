@@ -1,0 +1,15 @@
+{
+    "StartBattlePassTasks" : {
+        "next" : [
+            "RefreshTask",
+            "ReceiveBattlePassRewards"
+        ]
+    },
+    "RefreshTask" : {
+        "action" : "Click",
+        "recognition" : "Custom",
+        "custom_recognition" : "my_reco_111",
+        "custom_action" : "my_action_222"
+    },
+    "ReceiveBattlePassRewards" : {}
+}

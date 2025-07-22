@@ -1,0 +1,25 @@
+{
+    "name": "登录，领取奖励",
+    "description": "登录游戏并领取奖励",
+    "action": "Click",
+    "recognition": "Custom",
+    "custom_recognition": "login_dairy_rewards_reco",
+    "custom_action": "login_dairy_rewards_action",
+    "steps": [
+        {
+            "template" : "LoginDairyRewards_ClickToLogin.png",
+            "action": "Click",
+            "origin roi" : [252,1085,210,50],
+            "recommended roi" : [202,1035,310,150]
+        },
+        {
+            "action": "Wait",
+            "duration": 5000
+        },
+        {
+            "action": "Click",
+            "recognition": "Custom",
+            "custom_recognition": "claim_reward_button_reco"
+        }
+    ]
+}

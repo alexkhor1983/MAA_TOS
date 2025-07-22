@@ -1,11 +1,19 @@
 {
-    "MyTask1": {},
-    "MyTask2": {},
-    "MyTask3": {},
+    "MyTask_LoginThenReceiveDailyRewards": {
+        "action" : "Click"
+    },
+    "MyTask_FightArena": {},
+    "MyTask_CompleteGuideQuest": {},
+    "MyTask_CompleteBattlePassQuest": {
+        "task" : [
+            "StartBattlePassTasks"
+        ]
+    },
     "MyTask4": {
         "recognition": "Custom",
         "custom_recognition": "my_reco_222",
         "action": "Custom",
         "custom_action": "my_action_111"
     }
+    
 }

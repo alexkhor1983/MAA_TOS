@@ -13,18 +13,16 @@
             }
         }
     ],
+    "name": "MAA_TOS", //默认为null
+    "version":  "1.0.5", //默认为null
+    "mirrorchyan_rid":  "", //默认为null , 比如 M9A
+    "url":  "项目链接(目前应该只支持Github)", //默认为null , 比如 https://github.com/{Github账户}/{Github项目}
+    "custom_title": "MAA_TOS 神魔之塔助手", //默认为null, 使用该字段后，标题栏将只显示custom_title和version
     "resource": [
         {
             "name": "官服",
             "path": [
                 "{PROJECT_DIR}/resource"
-            ]
-        },
-        {
-            "name": "B 服",
-            "path": [
-                "{PROJECT_DIR}/resource",
-                "{PROJECT_DIR}/resource_bilibili"
             ]
         }
     ],
@@ -36,26 +34,35 @@
     },
     "task": [
         {
-            "name": "普通任务",
-            "entry": "MyTask1"
+            "name": "登录，领取奖励",
+            "entry": "MyTask_LoginThenReceiveDailyRewards"
         },
         {
-            "name": "选项任务",
-            "entry": "MyTask2",
+            "name": "刷竞技场",
+            "entry": "MyTask_FightArena",
             "option": [
                 "任务选项1"
             ]
         },
         {
-            "name": "参数任务",
-            "entry": "MyTask3",
+            "name": "完成通行证任务",
+            "entry": "MyTask_CompleteBattlePassQuest",
+            "option": [
+                "刷取到消除符石",
+                "刷取到公会任务"
+            ],
+            "pipeline_override": {}
+        },
+        {
+            "name": "完成公会任务",
+            "entry": "MyTask_CompleteGuideQuest",
             "option": [
                 "任务选项1"
             ],
             "pipeline_override": {}
         },
         {
-            "name": "带Custom的任务",
+            "name": "Debug",
             "entry": "MyTask4"
         }
     ],
