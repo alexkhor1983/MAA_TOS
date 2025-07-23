@@ -1,6 +1,8 @@
 {
     "MyTask_LoginThenReceiveDailyRewards": {
-        "action" : "Click"
+        "task": [
+            "点击登录按钮"
+        ]
     },
     "MyTask_FightArena": {},
     "MyTask_CompleteGuideQuest": {},
