@@ -1,16 +1,8 @@
 {
     "controller": [
         {
-            "name": "安卓端",
+            "name": "ADB 默认方式",
             "type": "Adb"
-        },
-        {
-            "name": "桌面端",
-            "type": "Win32",
-            "win32": {
-                "class_regex": ".*",
-                "window_regex": "Visual Studio"
-            }
         }
     ],
     "version":  "1.0.6",
@@ -37,15 +29,12 @@
             "name": "刷竞技场",
             "entry": "MyTask_FightArena",
             "option": [
-                "任务选项1"
             ]
         },
         {
             "name": "完成通行证任务",
             "entry": "MyTask_CompleteBattlePassQuest",
             "option": [
-                "刷取到消除符石",
-                "刷取到公会任务"
             ],
             "pipeline_override": {}
         },
@@ -68,17 +57,11 @@
                 {
                     "name": "文本1",
                     "pipeline_override": {
-                        "OcrTask": {
-                            "text": "文本1"
-                        }
                     }
                 },
                 {
                     "name": "文本2",
                     "pipeline_override": {
-                        "OcrTask": {
-                            "text": "文本2"
-                        }
                     }
                 }
             ]
