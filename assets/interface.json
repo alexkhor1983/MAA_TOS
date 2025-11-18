@@ -15,7 +15,7 @@
     ],
     "task": [
         {
-            "name": "启动游戏",
+            "name": "启动神魔之塔",
             "entry": "StartGame_Start"
         },
         {
