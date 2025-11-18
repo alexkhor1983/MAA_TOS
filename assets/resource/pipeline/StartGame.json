@@ -127,70 +127,54 @@
     "StartGame_TouchStart": {
         "doc": "点击进入",
         "recognition": "OCR",
-        "roi": [
-            823,
-            461,
-            126,
-            58
-        ],
-        "expected": "TOUCH",
+        "roi": [186,1007, 304,156],
+        "expected": "點擊熒幕進入游戲",
         "action": "Click",
         "post_delay": 10000,
         "next": [
             "StartGame_TouchStart",
-            "StartGame_NewChar",
-            "StartGame_SeasonSet",
-            "StartGame_MapPage",
-            "StartGame_PVPSet"
-        ]
-    },
-    "StartGame_NewChar": {
-        "doc": "推出全新新角色识别",
-        "recognition": "OCR",
-        "roi": [
-            121,
-            631,
-            108,
-            41
-        ],
-        "expected": "推出全新",
-        "action": "Click",
-        "post_delay": 2000,
-        "next": [
-            "StartGame_NewChar",
-            "StartGame_SeasonSet",
+            "StartGame_LoginFailed",
+            "StartGame_CloseNotice",
             "StartGame_MapPage"
         ]
     },
-    "StartGame_SeasonSet": {
-        "doc": "赛季结算",
+    "StartGame_LoginFailed": {
+        "doc": "登錄失敗，點擊Google登錄",
         "recognition": "OCR",
-        "roi": [
-            813,
-            580,
-            145,
-            34
-        ],
-        "expected": "奖励已发放至背包",
+        "roi" : [74,450,527,166],
+        "expected": "以 Google 帳戶登錄",
+        "action": "Click",
+        "post_delay": 10000,
+        "next": [
+            "StartGame_TouchStart"
+        ]
+    },
+    "StartGame_CloseNotice": {
+        "doc": "关闭所有公告弹窗",
+        "recognition": "TemplateMatch",
+        "roi": [0, 0, 0, 0],
+        "template": "close_notice/",
+        "threshold": 0.75,
         "action": "Click",
         "post_delay": 2000,
         "next": [
+            "StartGame_CloseNotice",
+            "StartGame_CloseMonthyPassBanner",
             "StartGame_MapPage"
         ]
     },
-    "StartGame_PVPSet": {
-        "doc": "段位结算，点击确认",
-        "recognition": "OCR",
-        "roi": [
-            612,
-            642,
-            53,
-            35
+    "StartGame_CloseMonthyPassBanner": {
+        "doc": "关闭月卡或通行证弹窗",
+        "recognition": "TemplateMatch",
+        "roi": [0, 0, 0, 0],
+        "template": [
+            "monthly_pass/banner_close.png"
         ],
-        "expected": "确认",
+        "threshold": 0.75,
         "action": "Click",
         "post_delay": 2000,
         "next": [
+            "StartGame_CloseMonthyPassBanner",
             "StartGame_MapPage"
         ]
     },
