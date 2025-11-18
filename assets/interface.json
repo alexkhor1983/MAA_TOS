@@ -15,290 +15,47 @@
     ],
     "task": [
         {
-            "name": "启动神魔之塔",
+            "name": "启动游戏",
             "entry": "StartGame_Start"
         },
         {
-            "name": "地图采集",
-            "entry": "Collect_StartGame_HomePage"
-        },
-        {
-            "name": "地图扫荡",
-            "entry": "Battle_StartGame_HomePage",
-            "option": [
-                "属性石头",
-                "双倍图战斗次数"
-            ]
-        },
-        {
-            "name": "装备制作强化分解炼制",
-            "entry": "Equip_HomePage"
-        },
-        {
-            "name": "白嫖抽卡",
-            "entry": "Gacha_BackHomePage"
+            "name": "领取奖励",
+            "entry": "GetReward_HomePage"
         },
         {
             "name": "竞技场",
-            "entry": "PVP_HomePage",
+            "entry": "PVP_HomePage"
+        },
+        {
+            "name": "公会任务",
+            "entry": "GuildTask_Start"
+        },
+        {
+            "name": "刷体力",
+            "entry": "StaminaFarm_Start",
             "option": [
-                "竞技场战斗次数"
+                "刷体力"
             ]
         },
         {
-            "name": "领取日常奖励",
-            "entry": "GetReward_HomePage",
-            "option": [
-                "工会奖励"
-            ]
+            "name": "治疗心理创伤",
+            "entry": "TraumaHealing_Start"
         },
         {
-            "name": "领取通行证奖励",
-            "entry": "Pass_HomePage"
-        },
-        {
-            "name": "领取邮件",
-            "entry": "Mail_HomePage"
-        },
-        {
-            "name": "活动图扫荡",
-            "entry": "Event_HomePage",
-            "option": [
-                "活动图小游戏扫荡"
-            ]
+            "name": "退出游戏",
+            "entry": "ExitGame_Start"
         }
     ],
     "option": {
-        "属性石头": {
+        "刷体力": {
             "cases": [
                 {
-                    "name": "火",
-                    "pipeline_override": {
-                        "Battle_FastBattleTouch_StoneSelect": {
-                            "target": [
-                                230,
-                                120,
-                                0,
-                                0
-                            ]
-                        }
-                    }
+                    "name": "刷灵魂",
+                    "pipeline_override": {}
                 },
                 {
-                    "name": "水",
-                    "pipeline_override": {
-                        "Battle_FastBattleTouch_StoneSelect": {
-                            "target": [
-                                230,
-                                175,
-                                0,
-                                0
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "风",
-                    "pipeline_override": {
-                        "Battle_FastBattleTouch_StoneSelect": {
-                            "target": [
-                                230,
-                                230,
-                                0,
-                                0
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "光",
-                    "pipeline_override": {
-                        "Battle_FastBattleTouch_StoneSelect": {
-                            "target": [
-                                230,
-                                290,
-                                0,
-                                0
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "暗",
-                    "pipeline_override": {
-                        "Battle_FastBattleTouch_StoneSelect": {
-                            "target": [
-                                230,
-                                350,
-                                0,
-                                0
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "竞技场战斗次数": {
-            "cases": [
-                {
-                    "name": "战斗一次",
-                    "pipeline_override": {
-                        "PVP_AutoBattleMAX": {
-                            "target": [
-                                425,
-                                435,
-                                0,
-                                0
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "Max",
-                    "pipeline_override": {
-                        "PVP_AutoBattleMAX": {
-                            "target": [
-                                865,
-                                435,
-                                0,
-                                0
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "双倍图战斗次数": {
-            "cases": [
-                {
-                    "name": "战斗一次",
-                    "pipeline_override": {
-                        "Battle_FastBattleTouch2": {
-                            "next": [
-                                "Battle_FastBattle2"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "Max",
-                    "pipeline_override": {
-                        "Battle_FastBattleTouch2": {
-                            "next": [
-                                "Battle_FastBattleMAXTouch"
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "活动图小游戏扫荡": {
-            "cases": [
-                {
-                    "name": "开启",
-                    "pipeline_override": {
-                        "Event_NormalBattleBack2": {
-                            "next": [
-                                "Event_Explore"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "关闭",
-                    "pipeline_override": {
-                        "Event_NormalBattleBack2": {
-                            "next": [
-                                "Event_LeaveEvent"
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "工会奖励": {
-            "cases": [
-                {
-                    "name": "开启",
-                    "pipeline_override": {
-                        "GetReward_HomePage": {
-                            "next": [
-                                "GetReward_BackHomePage"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "关闭",
-                    "pipeline_override": {
-                        "GetReward_HomePage": {
-                            "next": [
-                                "GetReward_DailyReward"
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "测试模式": {
-            "cases": [
-                {
-                    "name": "关闭",
-                    "pipeline_override": {
-                        "Battle_FinBackMapPage": {
-                            "next": []
-                        }
-                    }
-                },
-                {
-                    "name": "开启",
-                    "pipeline_override": {
-                        "Battle_FinBackMapPage": {
-                            "next": [
-                                "Equip_HomePage"
-                            ]
-                        },
-                        "Collect_FinBackMapPage": {
-                            "next": [
-                                "Battle_StartGame_HomePage"
-                            ]
-                        },
-                        "Equip_FinBackMapPage": {
-                            "next": [
-                                "Gacha_BackHomePage"
-                            ]
-                        },
-                        "GACHA_FinBackMapPage": {
-                            "next": [
-                                "PVP_HomePage"
-                            ]
-                        },
-                        "GetReward_FinBackMapPage": {
-                            "next": [
-                                "Pass_HomePage"
-                            ]
-                        },
-                        "Mail_FinBackMapPage": {
-                            "next": [
-                                "Event_HomePage"
-                            ]
-                        },
-                        "Pass_FinBackMapPage": {
-                            "next": [
-                                "Mail_HomePage"
-                            ]
-                        },
-                        "PVP_FinBackMapPage": {
-                            "next": [
-                                "GetReward_HomePage"
-                            ]
-                        },
-                        "Start_FinBackMapPage": {
-                            "next": [
-                                "Collect_StartGame_HomePage"
-                            ]
-                        }
-                    }
+                    "name": "刷公会战",
+                    "pipeline_override": {}
                 }
             ]
         }
