@@ -98,7 +98,7 @@ jobs:
         uses: robinraju/release-downloader@v1
         with:
           repository: SweetSmellFox/MFAAvalonia
-          fileName: "MFAAvalonia*"
+          fileName: "c*"
           latest: true
           out-file-path: MFA
           extract: true
@@ -112,9 +112,10 @@ jobs:
             echo "MFAAvalonia executable not found" >&2
             exit 1
           fi
-          cp "$gui_exe" ./install/MFAAvalonia.exe
+          mfa_dir=$(dirname "$gui_exe")
+          cp -r "$mfa_dir"/* ./install/
           # url项示例  https://github.com/SweetSmellFox/MFAAvalonia
-          jq --arg version_name "项目名称" --arg url ""https://github.com/作者名/仓库名"" --arg version ${{ needs.meta.outputs.tag }} '. + {"name": $version_name, "url": $url,"version": $version}' ./assets/interface.json > ./install/interface.json
+          jq --arg version_name "MAA_TOS" --arg url ""https://github.com/alexkhor1983/MAA_TOS"" --arg version ${{ needs.meta.outputs.tag }} '. + {"name": $version_name, "url": $url,"version": $version}' ./assets/interface.json > ./install/interface.json
 
       - uses: actions/upload-artifact@v4
         with:

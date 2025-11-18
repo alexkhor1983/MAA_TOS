@@ -1,14 +1,13 @@
 {
     "name": "MAA_TOS",
-    "version": "v1.1.3",
-    "mirrorchyan_rid": null,
-    "mirrorchyan_multiplatform": false,
     "url": "https://github.com/alexkhor1983/MAA_TOS",
-    "custom_title": null,
+    "version": "v1.1.3",
+    "mirrorchyan_rid": "MAA_TOS",
+    "mirrorchyan_multiplatform": true,
     "controller": [
-        {
-            "name": "安卓端",
-            "type": "Adb"
+    {
+      "name": "ADB 默认方式",
+      "type": "Adb"
         }
     ],
     "resource": [
