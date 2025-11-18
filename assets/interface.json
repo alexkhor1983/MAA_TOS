@@ -1,4 +1,10 @@
 {
+    "name": "MAA_TOS",
+    "version": "v1.1.3",
+    "mirrorchyan_rid": null,
+    "mirrorchyan_multiplatform": false,
+    "url": "https://github.com/alexkhor1983/MAA_TOS",
+    "custom_title": null,
     "controller": [
         {
             "name": "安卓端",

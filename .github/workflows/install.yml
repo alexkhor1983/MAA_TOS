@@ -94,11 +94,11 @@ jobs:
           out-file-path: "deps"
           extract: true
 
-      - name: Download MFAWPF
+      - name: Download MFAAvalonia
         uses: robinraju/release-downloader@v1
         with:
-          repository: SweetSmellFox/MFAWPF
-          filename: MFAWPF*
+          repository: SweetSmellFox/MFAAvalonia
+          fileName: "MFAAvalonia-win*"
           latest: true
           out-file-path: MFA
           extract: true
@@ -107,8 +107,13 @@ jobs:
         shell: bash
         run: |
           python ./install.py ${{ needs.meta.outputs.tag }}
-          cp ./MFA/MFAWPF.exe ./install
-          # url项示例  https://github.com/SweetSmellFox/MFAWPF
+          gui_exe=$(find ./MFA -maxdepth 3 -type f -name 'MFAAvalonia*.exe' | head -n 1)
+          if [[ -z "$gui_exe" ]]; then
+            echo "MFAAvalonia executable not found" >&2
+            exit 1
+          fi
+          cp "$gui_exe" ./install/MFAAvalonia.exe
+          # url项示例  https://github.com/SweetSmellFox/MFAAvalonia
           jq --arg version_name "项目名称" --arg url ""https://github.com/作者名/仓库名"" --arg version ${{ needs.meta.outputs.tag }} '. + {"name": $version_name, "url": $url,"version": $version}' ./assets/interface.json > ./install/interface.json
 
       - uses: actions/upload-artifact@v4
