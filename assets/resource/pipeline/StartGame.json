@@ -1,8 +1,8 @@
 {
-    "$__mpe_config_新建Pipeline2": {
+    "$__mpe_config_StartGame": {
         "$__mpe_code": {
             "prefix": "",
-            "filename": "新建Pipeline2",
+            "filename": "StartGame",
             "version": "v0.7.0"
         }
     },
@@ -632,108 +632,6 @@
             "position": {
                 "x": 3770,
                 "y": 1046
-            }
-        }
-    },
-    "GetReward_HomePage": {
-        "recognition": {
-            "type": "DirectHit",
-            "param": {}
-        },
-        "action": {
-            "type": "DoNothing",
-            "param": {}
-        },
-        "doc": "领取奖励",
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 279
-            }
-        }
-    },
-    "PVP_HomePage": {
-        "recognition": {
-            "type": "DirectHit",
-            "param": {}
-        },
-        "action": {
-            "type": "DoNothing",
-            "param": {}
-        },
-        "doc": "竞技场",
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 468
-            }
-        }
-    },
-    "GuildTask_Start": {
-        "recognition": {
-            "type": "DirectHit",
-            "param": {}
-        },
-        "action": {
-            "type": "DoNothing",
-            "param": {}
-        },
-        "doc": "公会任务",
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 657
-            }
-        }
-    },
-    "StaminaFarm_Start": {
-        "recognition": {
-            "type": "DirectHit",
-            "param": {}
-        },
-        "action": {
-            "type": "DoNothing",
-            "param": {}
-        },
-        "doc": "刷体力",
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 846
-            }
-        }
-    },
-    "TraumaHealing_Start": {
-        "recognition": {
-            "type": "DirectHit",
-            "param": {}
-        },
-        "action": {
-            "type": "DoNothing",
-            "param": {}
-        },
-        "doc": "操他妈MH智障坐牢设计，别怪我写脚本自动化",
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 1035
-            }
-        }
-    },
-    "ExitGame_Start": {
-        "recognition": {
-            "type": "DirectHit",
-            "param": {}
-        },
-        "action": {
-            "type": "DoNothing",
-            "param": {}
-        },
-        "doc": "退出游戏",
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 1224
             }
         }
     }
