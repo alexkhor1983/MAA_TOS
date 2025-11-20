@@ -1,0 +1,28 @@
+{
+    "$__mpe_config_ExitGame": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "ExitGame",
+            "version": "v0.7.0"
+        }
+    },
+    "ExitGame_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "StopApp",
+            "param": {
+                "package": "com.madhead.tos.zh"
+            }
+        },
+        "doc": "退出游戏",
+        "$__mpe_code": {
+            "position": {
+                "x": 191,
+                "y": 1200
+            }
+        }
+    }
+}

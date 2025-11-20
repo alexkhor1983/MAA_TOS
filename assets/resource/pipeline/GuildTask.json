@@ -1,0 +1,26 @@
+{
+    "$__mpe_config_GuildTask": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "GuildTask",
+            "version": "v0.7.0"
+        }
+    },
+    "GuildTask_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "公会任务",
+        "$__mpe_code": {
+            "position": {
+                "x": 100,
+                "y": 707
+            }
+        }
+    }
+}

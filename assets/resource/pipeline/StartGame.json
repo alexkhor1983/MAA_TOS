@@ -1,1 +1,740 @@
-{"$__mpe_config_新建Pipeline2":{"$__mpe_code":{"prefix":"","filename":"新建Pipeline2","version":"v0.7.0"}},"StartGame_Start":{"recognition":{"type":"DirectHit","param":{}},"action":{"type":"StartApp","param":{"package":"com.madhead.tos.zh"}},"post_delay":5000,"pre_wait_freezes":500,"doc":"启动游戏","$__mpe_code":{"position":{"x":0,"y":0}},"next":["StartGame_LoadingPage"]},"StartGame_LoadingPage":{"recognition":{"type":"OCR","param":{"roi":[792,274,124,38],"expected":"神魔之塔"}},"action":{"type":"DoNothing","param":{}},"post_delay":5000,"pre_wait_freezes":3000,"$__mpe_code":{"position":{"x":290,"y":0}},"next":["StartGame_TouchStart","StartGame_UpdateDate","StartGame_Update"]},"StartGame_Update":{"recognition":{"type":"OCR","param":{"roi":[580,258,119,44],"expected":"更新通知"}},"action":{"type":"DoNothing","param":{}},"post_delay":15000,"pre_wait_freezes":5000,"doc":"游戏版本更新","$__mpe_code":{"position":{"x":580,"y":150}}},"StartGame_UpdateDate":{"recognition":{"type":"OCR","param":{"roi":[578,262,124,51],"expected":"下载"}},"action":{"type":"Click","param":{}},"post_delay":10000,"doc":"下载数据","$__mpe_code":{"position":{"x":590,"y":472}},"next":["StartGame_TouchStart"]},"StartGame_UpdateDating":{"recognition":{"type":"OCR","param":{"roi":[77,621,84,33],"expected":"正在下载"}},"action":{"type":"DoNothing","param":{}},"post_delay":10000,"doc":"下载数据中","$__mpe_code":{"position":{"x":580,"y":738}},"next":["StartGame_UpdateDating","StartGame_TouchStart"]},"StartGame_Loading":{"recognition":{"type":"OCR","param":{"roi":[935,480,98,34],"expected":"游戏启动中"}},"action":{"type":"DoNothing","param":{}},"post_delay":30000,"doc":"游戏启动中","$__mpe_code":{"position":{"x":580,"y":1047}},"next":["StartGame_Loading","StartGame_TouchStart"]},"StartGame_TouchStart":{"recognition":{"type":"OCR","param":{"roi":[186,1007,304,156],"expected":"點擊熒幕進入游戲"}},"action":{"type":"Click","param":{}},"post_delay":10000,"doc":"点击进入","$__mpe_code":{"position":{"x":870,"y":459}},"next":["StartGame_TouchStart","StartGame_LoginFailed","StartGame_CloseNotice","StartGame_MapPage"]},"StartGame_LoginFailed":{"recognition":{"type":"OCR","param":{"roi":[74,450,527,166],"expected":"以 Google 帳戶登錄"}},"action":{"type":"Click","param":{}},"post_delay":10000,"doc":"登錄失敗","$__mpe_code":{"position":{"x":1182,"y":185}},"interrupt":["StartGame_LoginFailedClickTermAndCondition"]},"StartGame_LoginFailedClickTermAndCondition":{"recognition":{"type":"TemplateMatch","param":{"template":"StartGame_TermAndCondition.png","roi":[185,894,389,136]}},"action":{"type":"Click","param":{"target":[365,702]}},"post_delay":10000,"doc":"登錄失敗，點擊同意條款","$__mpe_code":{"position":{"x":1481,"y":183}},"interrupt":["StartGame_LoginFailedNotYetTickTermAndCondition"],"on_error":["StartGame_LoginFailed"]},"StartGame_LoginFailedNotYetTickTermAndCondition":{"recognition":{"type":"TemplateMatch","param":{"template":"StartGame_NotYetTickTermAndCondition.png","roi":[60,550,598,133]}},"action":{"type":"Click","param":{"target":[207,960]}},"post_delay":10000,"doc":"未勾选同意條款","$__mpe_code":{"position":{"x":1810,"y":171}},"on_error":["StartGame_LoginFailedClickTermAndCondition"]},"StartGame_CloseNotice":{"recognition":{"type":"TemplateMatch","param":{"roi":[0,0,0,0],"template":"/close_notice","threshold":0.75}},"action":{"type":"Click","param":{}},"post_delay":2000,"doc":"关闭所有公告弹窗","$__mpe_code":{"position":{"x":1160,"y":976}},"next":["StartGame_CloseNotice","StartGame_MapPage"]},"StartGame_MapPage":{"recognition":{"type":"TemplateMatch","param":{"roi":[1122,646,40,38],"template":[]}},"action":{"type":"DoNothing","param":{}},"post_delay":2000,"doc":"识别右下图钉-章节主页","$__mpe_code":{"position":{"x":1740,"y":991}},"next":["StartGame_BackHomePage"]},"StartGame_BackHomePage":{"recognition":{"type":"TemplateMatch","param":{"roi":[1122,646,40,38],"template":[]}},"action":{"type":"Click","param":{"target":[1186,46,0,0]}},"post_delay":2000,"pre_delay":2000,"doc":"找到图钉-点击返回主页","$__mpe_code":{"position":{"x":2030,"y":961}},"next":["StartGame_DaliyBanner","StartGame_Banner"],"on_error":["StartGame_BackMapPage"]},"StartGame_DaliyBanner":{"recognition":{"type":"OCR","param":{"roi":[538,167,92,48],"expected":"签到成功"}},"action":{"type":"Click","param":{"target":[10,10,0,0]}},"post_delay":2000,"pre_delay":2000,"doc":"月签到第一日签到识别","$__mpe_code":{"position":{"x":2332,"y":1376}},"next":["StartGame_DaliyBanner2","StartGame_DaliyBanner","StartGame_Banner","StartGame_Banner2"],"on_error":["StartGame_BackMapPage"]},"StartGame_DaliyBanner2":{"recognition":{"type":"OCR","param":{"roi":[571,209,84,30],"expected":"签到成功"}},"action":{"type":"Click","param":{"target":[1035,175,0,0]}},"post_delay":2000,"pre_delay":2000,"doc":"每日签到第一日签到识别","$__mpe_code":{"position":{"x":2594,"y":1373}},"next":["StartGame_DaliyBanner","StartGame_Banner","StartGame_Banner2"],"on_error":["StartGame_BackMapPage"]},"StartGame_Banner":{"recognition":{"type":"OCR","param":{"roi":[916,102,143,38],"expected":"不再"}},"action":{"type":"Click","param":{"target":[1130,500,0,0]}},"post_delay":2000,"pre_delay":2000,"doc":"商城推广礼包，点击关闭","$__mpe_code":{"position":{"x":2860,"y":1373}},"next":["StartGame_Banner","StartGame_Banner2"],"on_error":["StartGame_BackMapPage"]},"StartGame_Banner2":{"recognition":{"type":"TemplateMatch","param":{"roi":[625,107,28,34],"template":[]}},"action":{"type":"Click","param":{"target":[1130,500,0,0]}},"post_delay":2000,"pre_delay":2000,"doc":"公告弹窗","$__mpe_code":{"position":{"x":3139,"y":1372}},"next":["StartGame_BackMapPage"]},"StartGame_BackMapPage":{"recognition":{"type":"OCR","param":{"roi":[98,656,66,32],"expected":"抽抽乐"}},"action":{"type":"Click","param":{"target":[135,40,0,0]}},"post_delay":2000,"doc":"识别左下抽抽乐-返回地图页","$__mpe_code":{"position":{"x":3480,"y":1016}},"next":["StartGame_FinBackMapPage","StartGame_BackMapPage"]},"StartGame_FinBackMapPage":{"recognition":{"type":"TemplateMatch","param":{"roi":[1122,646,40,38],"template":[]}},"action":{"type":"DoNothing","param":{}},"doc":"识别右下图钉-章节主页","$__mpe_code":{"position":{"x":3770,"y":1046}}},"GetReward_HomePage":{"recognition":{"type":"DirectHit","param":{}},"action":{"type":"DoNothing","param":{}},"doc":"领取奖励","$__mpe_code":{"position":{"x":0,"y":279}}},"PVP_HomePage":{"recognition":{"type":"DirectHit","param":{}},"action":{"type":"DoNothing","param":{}},"doc":"竞技场","$__mpe_code":{"position":{"x":0,"y":468}}},"GuildTask_Start":{"recognition":{"type":"DirectHit","param":{}},"action":{"type":"DoNothing","param":{}},"doc":"公会任务","$__mpe_code":{"position":{"x":0,"y":657}}},"StaminaFarm_Start":{"recognition":{"type":"DirectHit","param":{}},"action":{"type":"DoNothing","param":{}},"doc":"刷体力","$__mpe_code":{"position":{"x":0,"y":846}}},"TraumaHealing_Start":{"recognition":{"type":"DirectHit","param":{}},"action":{"type":"DoNothing","param":{}},"doc":"操他妈MH智障坐牢设计，别怪我写脚本自动化","$__mpe_code":{"position":{"x":0,"y":1035}}},"ExitGame_Start":{"recognition":{"type":"DirectHit","param":{}},"action":{"type":"DoNothing","param":{}},"doc":"退出游戏","$__mpe_code":{"position":{"x":0,"y":1224}}}}
+{
+    "$__mpe_config_新建Pipeline2": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "新建Pipeline2",
+            "version": "v0.7.0"
+        }
+    },
+    "StartGame_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "StartApp",
+            "param": {
+                "package": "com.madhead.tos.zh"
+            }
+        },
+        "post_delay": 5000,
+        "pre_wait_freezes": 500,
+        "doc": "启动游戏",
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "next": [
+            "StartGame_LoadingPage"
+        ]
+    },
+    "StartGame_LoadingPage": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    792,
+                    274,
+                    124,
+                    38
+                ],
+                "expected": "神魔之塔"
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "post_delay": 5000,
+        "pre_wait_freezes": 3000,
+        "$__mpe_code": {
+            "position": {
+                "x": 290,
+                "y": 0
+            }
+        },
+        "next": [
+            "StartGame_TouchStart",
+            "StartGame_UpdateDate",
+            "StartGame_Update"
+        ]
+    },
+    "StartGame_Update": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    580,
+                    258,
+                    119,
+                    44
+                ],
+                "expected": "更新通知"
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "post_delay": 15000,
+        "pre_wait_freezes": 5000,
+        "doc": "游戏版本更新",
+        "$__mpe_code": {
+            "position": {
+                "x": 580,
+                "y": 150
+            }
+        }
+    },
+    "StartGame_UpdateDate": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    578,
+                    262,
+                    124,
+                    51
+                ],
+                "expected": "下载"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 10000,
+        "doc": "下载数据",
+        "$__mpe_code": {
+            "position": {
+                "x": 590,
+                "y": 472
+            }
+        },
+        "next": [
+            "StartGame_TouchStart"
+        ]
+    },
+    "StartGame_UpdateDating": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    77,
+                    621,
+                    84,
+                    33
+                ],
+                "expected": "正在下载"
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "post_delay": 10000,
+        "doc": "下载数据中",
+        "$__mpe_code": {
+            "position": {
+                "x": 580,
+                "y": 738
+            }
+        },
+        "next": [
+            "StartGame_UpdateDating",
+            "StartGame_TouchStart"
+        ]
+    },
+    "StartGame_Loading": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    935,
+                    480,
+                    98,
+                    34
+                ],
+                "expected": "游戏启动中"
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "post_delay": 30000,
+        "doc": "游戏启动中",
+        "$__mpe_code": {
+            "position": {
+                "x": 580,
+                "y": 1047
+            }
+        },
+        "next": [
+            "StartGame_Loading",
+            "StartGame_TouchStart"
+        ]
+    },
+    "StartGame_TouchStart": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    186,
+                    1007,
+                    304,
+                    156
+                ],
+                "expected": "點擊熒幕進入游戲"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 10000,
+        "doc": "点击进入",
+        "$__mpe_code": {
+            "position": {
+                "x": 870,
+                "y": 459
+            }
+        },
+        "next": [
+            "StartGame_TouchStart",
+            "StartGame_LoginFailed",
+            "StartGame_CloseNotice",
+            "StartGame_MapPage"
+        ]
+    },
+    "StartGame_LoginFailed": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    74,
+                    450,
+                    527,
+                    166
+                ],
+                "expected": "以 Google 帳戶登錄"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 10000,
+        "doc": "登錄失敗",
+        "$__mpe_code": {
+            "position": {
+                "x": 1182,
+                "y": 185
+            }
+        },
+        "interrupt": [
+            "StartGame_LoginFailedClickTermAndCondition"
+        ]
+    },
+    "StartGame_LoginFailedClickTermAndCondition": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "StartGame_TermAndCondition.png",
+                "roi": [
+                    185,
+                    894,
+                    389,
+                    136
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    365,
+                    702
+                ]
+            }
+        },
+        "post_delay": 10000,
+        "doc": "登錄失敗，點擊同意條款",
+        "$__mpe_code": {
+            "position": {
+                "x": 1481,
+                "y": 183
+            }
+        },
+        "interrupt": [
+            "StartGame_LoginFailedNotYetTickTermAndCondition"
+        ],
+        "on_error": [
+            "StartGame_LoginFailed"
+        ]
+    },
+    "StartGame_LoginFailedNotYetTickTermAndCondition": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "StartGame_NotYetTickTermAndCondition.png",
+                "roi": [
+                    60,
+                    550,
+                    598,
+                    133
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    207,
+                    960
+                ]
+            }
+        },
+        "post_delay": 10000,
+        "doc": "未勾选同意條款",
+        "$__mpe_code": {
+            "position": {
+                "x": 1810,
+                "y": 171
+            }
+        },
+        "on_error": [
+            "StartGame_LoginFailedClickTermAndCondition"
+        ]
+    },
+    "StartGame_CloseNotice": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "template": "/close_notice",
+                "threshold": 0.75
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "关闭所有公告弹窗",
+        "$__mpe_code": {
+            "position": {
+                "x": 1160,
+                "y": 976
+            }
+        },
+        "next": [
+            "StartGame_CloseNotice",
+            "StartGame_MapPage"
+        ]
+    },
+    "StartGame_MapPage": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1122,
+                    646,
+                    40,
+                    38
+                ],
+                "template": []
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "识别右下图钉-章节主页",
+        "$__mpe_code": {
+            "position": {
+                "x": 1740,
+                "y": 991
+            }
+        },
+        "next": [
+            "StartGame_BackHomePage"
+        ]
+    },
+    "StartGame_BackHomePage": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1122,
+                    646,
+                    40,
+                    38
+                ],
+                "template": []
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1186,
+                    46,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "pre_delay": 2000,
+        "doc": "找到图钉-点击返回主页",
+        "$__mpe_code": {
+            "position": {
+                "x": 2030,
+                "y": 961
+            }
+        },
+        "next": [
+            "StartGame_DaliyBanner",
+            "StartGame_Banner"
+        ],
+        "on_error": [
+            "StartGame_BackMapPage"
+        ]
+    },
+    "StartGame_DaliyBanner": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    538,
+                    167,
+                    92,
+                    48
+                ],
+                "expected": "签到成功"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    10,
+                    10,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "pre_delay": 2000,
+        "doc": "月签到第一日签到识别",
+        "$__mpe_code": {
+            "position": {
+                "x": 2332,
+                "y": 1376
+            }
+        },
+        "next": [
+            "StartGame_DaliyBanner2",
+            "StartGame_DaliyBanner",
+            "StartGame_Banner",
+            "StartGame_Banner2"
+        ],
+        "on_error": [
+            "StartGame_BackMapPage"
+        ]
+    },
+    "StartGame_DaliyBanner2": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    571,
+                    209,
+                    84,
+                    30
+                ],
+                "expected": "签到成功"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1035,
+                    175,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "pre_delay": 2000,
+        "doc": "每日签到第一日签到识别",
+        "$__mpe_code": {
+            "position": {
+                "x": 2594,
+                "y": 1373
+            }
+        },
+        "next": [
+            "StartGame_DaliyBanner",
+            "StartGame_Banner",
+            "StartGame_Banner2"
+        ],
+        "on_error": [
+            "StartGame_BackMapPage"
+        ]
+    },
+    "StartGame_Banner": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    916,
+                    102,
+                    143,
+                    38
+                ],
+                "expected": "不再"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1130,
+                    500,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "pre_delay": 2000,
+        "doc": "商城推广礼包，点击关闭",
+        "$__mpe_code": {
+            "position": {
+                "x": 2860,
+                "y": 1373
+            }
+        },
+        "next": [
+            "StartGame_Banner",
+            "StartGame_Banner2"
+        ],
+        "on_error": [
+            "StartGame_BackMapPage"
+        ]
+    },
+    "StartGame_Banner2": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    625,
+                    107,
+                    28,
+                    34
+                ],
+                "template": []
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1130,
+                    500,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "pre_delay": 2000,
+        "doc": "公告弹窗",
+        "$__mpe_code": {
+            "position": {
+                "x": 3139,
+                "y": 1372
+            }
+        },
+        "next": [
+            "StartGame_BackMapPage"
+        ]
+    },
+    "StartGame_BackMapPage": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    98,
+                    656,
+                    66,
+                    32
+                ],
+                "expected": "抽抽乐"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    135,
+                    40,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "doc": "识别左下抽抽乐-返回地图页",
+        "$__mpe_code": {
+            "position": {
+                "x": 3480,
+                "y": 1016
+            }
+        },
+        "next": [
+            "StartGame_FinBackMapPage",
+            "StartGame_BackMapPage"
+        ]
+    },
+    "StartGame_FinBackMapPage": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1122,
+                    646,
+                    40,
+                    38
+                ],
+                "template": []
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "识别右下图钉-章节主页",
+        "$__mpe_code": {
+            "position": {
+                "x": 3770,
+                "y": 1046
+            }
+        }
+    },
+    "GetReward_HomePage": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "领取奖励",
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 279
+            }
+        }
+    },
+    "PVP_HomePage": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "竞技场",
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 468
+            }
+        }
+    },
+    "GuildTask_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "公会任务",
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 657
+            }
+        }
+    },
+    "StaminaFarm_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "刷体力",
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 846
+            }
+        }
+    },
+    "TraumaHealing_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "操他妈MH智障坐牢设计，别怪我写脚本自动化",
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 1035
+            }
+        }
+    },
+    "ExitGame_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "退出游戏",
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 1224
+            }
+        }
+    }
+}

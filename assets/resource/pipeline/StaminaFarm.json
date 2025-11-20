@@ -1,0 +1,26 @@
+{
+    "$__mpe_config_StaminaFarm": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "StaminaFarm",
+            "version": "v0.7.0"
+        }
+    },
+    "StaminaFarm_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "刷体力",
+        "$__mpe_code": {
+            "position": {
+                "x": 100,
+                "y": 896
+            }
+        }
+    }
+}

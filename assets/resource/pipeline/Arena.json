@@ -1,0 +1,26 @@
+{
+    "$__mpe_config_Arena": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "Arena",
+            "version": "v0.7.0"
+        }
+    },
+    "Arena_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "领取奖励",
+        "$__mpe_code": {
+            "position": {
+                "x": 100,
+                "y": 329
+            }
+        }
+    }
+}
