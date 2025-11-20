@@ -39,7 +39,7 @@
             "name": "刷体力",
             "entry": "StaminaFarm_Start",
             "option": [
-                "刷体力"
+                "关卡选择"
             ]
         },
         {
@@ -52,7 +52,7 @@
         }
     ],
     "option": {
-        "刷体力": {
+        "关卡选择": {
             "cases": [
                 {
                     "name": "刷灵魂",
