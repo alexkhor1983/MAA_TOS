@@ -1,0 +1,384 @@
+{
+    "$__mpe_config_GetReward": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "GetReward",
+            "version": "v0.7.0"
+        }
+    },
+    "GetReward_Start": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "處理月卡與簽到彈窗，或在主畫面可用時直接開啟側邊欄",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "[JumpBack]PopupHandler_CloseCross",
+            "GetReward_CloseCross",
+            "GetReward_SignInReward",
+            "GetReward_Confirm",
+            "GetReward_OpenSideBar"
+        ],
+        "timeout": 15000,
+        "on_error": [
+            "GetReward_MonthlyPassDone"
+        ]
+    },
+    "GetReward_CloseCross": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "template": [
+                    "PopupHandler_CloseCross.png",
+                    "GetReward_MonthlyPassCross.png"
+                ],
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 1500,
+        "timeout": 8000,
+        "doc": "全螢幕 FeatureMatch 動態定位圓形或月禮包方形叉號按鈕並點擊；命中後繼續掃描其他彈窗",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "[JumpBack]PopupHandler_CloseCross",
+            "GetReward_CloseCross",
+            "GetReward_SignInReward",
+            "GetReward_Confirm",
+            "GetReward_OpenSideBar"
+        ],
+        "on_error": [
+            "GetReward_MonthlyPassDone"
+        ]
+    },
+    "GetReward_SignInReward": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    300,
+                    720,
+                    300
+                ],
+                "expected": [
+                    "簽到獎賞",
+                    "签到奖赏",
+                    "簽到獎勵",
+                    "签到奖励",
+                    "簽到",
+                    "签到"
+                ],
+                "threshold": 0.3
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "post_delay": 500,
+        "doc": "辨識簽到獎賞/签到奖励文字，導向確定按鈕點擊",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "[JumpBack]PopupHandler_CloseCross",
+            "GetReward_Confirm",
+            "GetReward_OpenSideBar"
+        ],
+        "on_error": [
+            "GetReward_MonthlyPassDone"
+        ]
+    },
+    "GetReward_Confirm": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    600,
+                    720,
+                    500
+                ],
+                "expected": ["確定", "确定"],
+                "threshold": 0.3
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 1500,
+        "timeout": 5000,
+        "doc": "辨識並點擊確定按鈕",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "[JumpBack]PopupHandler_CloseCross",
+            "GetReward_CloseCross",
+            "GetReward_SignInReward",
+            "GetReward_Confirm",
+            "GetReward_OpenSideBar"
+        ],
+        "on_error": [
+            "GetReward_MonthlyPassDone"
+        ]
+    },
+    "GetReward_MonthlyPassDone": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "月卡與簽到獎勵處理完畢，開始領取獎賞頁面的額外獎勵",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "GetReward_OpenSideBar"
+        ],
+        "timeout": 8000,
+        "on_error": [
+            "GetReward_Done"
+        ]
+    },
+    "GetReward_OpenSideBar": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    620,
+                    0,
+                    100,
+                    120
+                ],
+                "template": "GetReward_OpenSideBar_720.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 500,
+        "timeout": 8000,
+        "doc": "點擊主畫面右上角圖示以開啟側邊欄",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "GetReward_RewardIcon"
+        ],
+        "on_error": [
+            "GetReward_Done"
+        ]
+    },
+    "GetReward_RewardIcon": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    500,
+                    0,
+                    220,
+                    1280
+                ],
+                "expected": ["獎賞", "奖赏"],
+                "threshold": 0.3
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 1000,
+        "timeout": 8000,
+        "doc": "點擊側邊欄的獎賞圖示以開啟獎賞頁面",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "GetReward_AutoCollect"
+        ],
+        "on_error": [
+            "GetReward_Done"
+        ]
+    },
+    "GetReward_AutoCollect": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": ["自動領取", "自动领取"],
+                "threshold": 0.3
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 750,
+        "timeout": 5000,
+        "doc": "點擊獎賞頁面的自動領取按鈕",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "GetReward_CollectConfirmation",
+            "GetReward_AutoCollectComplete"
+        ],
+        "on_error": [
+            "GetReward_Done"
+        ]
+    },
+    "GetReward_CollectConfirmation": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [0, 0, 720, 1280],
+                "expected": ["獲得獎賞", "获得奖赏"],
+                "threshold": 0.3
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "timeout": 5000,
+        "next": ["GetReward_CollectConfirmationButton"],
+        "on_error": ["GetReward_Done"],
+        "doc": "確認自動領取後的獎賞彈窗"
+    },
+    "GetReward_CollectConfirmationButton": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [0, 600, 720, 500],
+                "expected": ["確定", "确定"],
+                "threshold": 0.3
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 750,
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "GetReward_Done"
+        ],
+        "on_error": ["GetReward_Done"],
+        "doc": "關閉自動領取後的獎賞確認彈窗"
+    },
+    "GetReward_AutoCollectComplete": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": [
+                    "自動領取",
+                    "自动领取"
+                ],
+                "threshold": 0.3
+            }
+        },
+        "inverse": true,
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "post_delay": 300,
+        "timeout": 5000,
+        "doc": "等待自動領取按鈕消失或超時，並處理期間出現的彈窗",
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "GetReward_Done"
+        ],
+        "on_error": [
+            "GetReward_Done"
+        ]
+    },
+    "GetReward_Done": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "timeout": 8000,
+        "next": [
+            "[JumpBack]PopupHandler_AccountRiskTitle",
+            "[JumpBack]PopupHandler_BonusStageText",
+            "GetReward_ReturnHome"
+        ],
+        "on_error": ["GetReward_Stop"],
+        "doc": "獎勵處理完成或無法繼續時，嘗試返回主畫面"
+    },
+    "GetReward_ReturnHome": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [240, 1100, 240, 140],
+                "expected": "BATTLE",
+                "threshold": 0.3
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1000,
+        "next": ["GetReward_Stop"],
+        "on_error": ["GetReward_Stop"],
+        "doc": "點擊底部 BATTLE 按鈕返回主畫面"
+    },
+    "GetReward_Stop": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "StopTask",
+            "param": {}
+        },
+        "doc": "結束領取獎勵任務"
+    }
+}

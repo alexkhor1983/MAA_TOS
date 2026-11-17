@@ -12,9 +12,16 @@
     ],
     "resource": [
         {
-            "name": "官服",
+            "name": "官服 (Google Play)",
             "path": [
                 "{PROJECT_DIR}/resource"
+            ]
+        },
+        {
+            "name": "官服 （APK）",
+            "path": [
+                "{PROJECT_DIR}/resource",
+                "{PROJECT_DIR}/resource_apk"
             ]
         }
     ],
@@ -43,8 +50,18 @@
             ]
         },
         {
-            "name": "治疗心理创伤",
-            "entry": "TraumaHealing_Start"
+            "name": "刷公会战",
+            "entry": "GuildBattleFarm_Start",
+            "option": [
+                "关卡选择"
+            ]
+        },
+        {
+            "name": "刷灵魂",
+            "entry": "SoulFarm_Start",
+            "option": [
+                "关卡选择"
+            ]
         },
         {
             "name": "退出游戏",

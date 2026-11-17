@@ -26,19 +26,88 @@
                 "y": 0
             }
         },
+        "timeout": 60000,
+        "on_error": [
+            "StartGame_LogoTimeout"
+        ],
+        "interrupt": [
+            "PopupHandler_AccountRiskTitle"
+        ],
         "next": [
-            "StartGame_LoadingPage"
+            "StartGame_MadHeadCopyright"
         ]
+    },
+    "StartGame_MadHeadCopyright": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    1150,
+                    720,
+                    130
+                ],
+                "expected": [
+                    "Mad Head Limited",
+                    "Limited",
+                    "Mad Head",
+                    "MadHead",
+                    "rights reserved"
+                ],
+                "threshold": 0.2
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    360,
+                    640
+                ]
+            }
+        },
+        "post_delay": 5000,
+        "rate_limit": 200,
+        "timeout": 60000,
+        "doc": "Detect the Mad Head copyright text, click the screen center to enter the game, then wait for loading popups",
+        "interrupt": [
+            "PopupHandler_AccountRiskTitle"
+        ],
+        "next": [
+            "StartGame_Done"
+        ]
+    },
+    "StartGame_Done": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "StopTask",
+            "param": {}
+        },
+        "doc": "啟動遊戲點擊進入成功，結束啟動任務以接續執行後續任務"
+    },
+    "StartGame_LogoTimeout": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "StopTask",
+            "param": {}
+        },
+        "doc": "等待一分鐘仍未出現標題圖示時跳過啟動任務"
     },
     "StartGame_LoadingPage": {
         "recognition": {
             "type": "OCR",
             "param": {
                 "roi": [
-                    792,
-                    274,
-                    124,
-                    38
+                    230,
+                    975,
+                    300,
+                    100
                 ],
                 "expected": "神魔之塔"
             }
@@ -55,6 +124,7 @@
                 "y": 0
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_TouchStart",
             "StartGame_UpdateDate",
@@ -113,6 +183,7 @@
                 "y": 472
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_TouchStart"
         ]
@@ -142,10 +213,30 @@
                 "y": 738
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_UpdateDating",
             "StartGame_TouchStart"
         ]
+    },
+    "StartGame_HomePage": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    240,
+                    1100,
+                    240,
+                    140
+                ],
+                "expected": "BATTLE"
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "识别主页中央的 BATTLE 按钮，避免进入主页后继续点击"
     },
     "StartGame_Loading": {
         "recognition": {
@@ -172,6 +263,7 @@
                 "y": 1047
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_Loading",
             "StartGame_TouchStart"
@@ -187,26 +279,38 @@
                     304,
                     156
                 ],
-                "expected": "點擊熒幕進入游戲"
+                "expected": [
+                    "點擊螢幕進入遊戲",
+                    "點擊螢幕進入游戲",
+                    "點擊熒幕進入遊戲",
+                    "點擊熒幕進入游戲",
+                    "點擊屏幕進入遊戲",
+                    "點擊屏幕進入游戲"
+                ],
+                "threshold": 0.2
             }
         },
         "action": {
             "type": "Click",
             "param": {}
         },
-        "post_delay": 10000,
-        "doc": "点击进入",
+        "post_delay": 500,
+        "rate_limit": 500,
+        "doc": "輪詢閃爍的進入遊戲提示；OCR 未命中時保留機會執行彈窗中斷處理",
         "$__mpe_code": {
             "position": {
                 "x": 870,
                 "y": 459
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
-            "StartGame_TouchStart",
+            "StartGame_Loading",
             "StartGame_LoginFailed",
             "StartGame_CloseNotice",
-            "StartGame_MapPage"
+            "StartGame_MapPage",
+            "StartGame_HomePage",
+            "StartGame_TouchStart"
         ]
     },
     "StartGame_LoginFailed": {
@@ -234,9 +338,7 @@
                 "y": 185
             }
         },
-        "interrupt": [
-            "StartGame_LoginFailedClickTermAndCondition"
-        ]
+        "interrupt": ["PopupHandler_AccountRiskTitle", "StartGame_LoginFailedClickTermAndCondition", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"]
     },
     "StartGame_LoginFailedClickTermAndCondition": {
         "recognition": {
@@ -268,9 +370,7 @@
                 "y": 183
             }
         },
-        "interrupt": [
-            "StartGame_LoginFailedNotYetTickTermAndCondition"
-        ],
+        "interrupt": ["PopupHandler_AccountRiskTitle", "StartGame_LoginFailedNotYetTickTermAndCondition", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "on_error": [
             "StartGame_LoginFailed"
         ]
@@ -335,6 +435,7 @@
                 "y": 976
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_CloseNotice",
             "StartGame_MapPage"
@@ -365,6 +466,7 @@
                 "y": 991
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_BackHomePage"
         ]
@@ -402,6 +504,7 @@
                 "y": 961
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_DaliyBanner",
             "StartGame_Banner"
@@ -443,6 +546,7 @@
                 "y": 1376
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_DaliyBanner2",
             "StartGame_DaliyBanner",
@@ -486,6 +590,7 @@
                 "y": 1373
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_DaliyBanner",
             "StartGame_Banner",
@@ -528,6 +633,7 @@
                 "y": 1373
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_Banner",
             "StartGame_Banner2"
@@ -569,6 +675,7 @@
                 "y": 1372
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_BackMapPage"
         ]
@@ -605,6 +712,7 @@
                 "y": 1016
             }
         },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "StartGame_FinBackMapPage",
             "StartGame_BackMapPage"
@@ -636,3 +744,5 @@
         }
     }
 }
+
+

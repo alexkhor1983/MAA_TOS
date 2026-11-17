@@ -15,12 +15,641 @@
             "type": "DoNothing",
             "param": {}
         },
-        "doc": "领取奖励",
+        "doc": "进入竞技场任务",
         "$__mpe_code": {
             "position": {
                 "x": 100,
                 "y": 329
             }
-        }
+        },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross", "Arena_SubLeaderEquipmentNotice"],
+        "next": [
+            "Arena_ConfirmSubLeader",
+            "Arena_CloseAdvancedFilter",
+            "Arena_RefreshSubLeader",
+            "Arena_ArenaBonus",
+            "Arena_AdvancedFilter",
+            "Arena_TeamPickPage",
+            "Arena_ConfirmTeam",
+            "Arena_EnterChallenge",
+            "Arena_SelectStage",
+            "Arena_Challenge",
+            "Arena_ChallengeImage",
+            "Arena_HomeIcon"
+        ]
+    },
+    "Arena_HomeIcon": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    500,
+                    700,
+                    220,
+                    350
+                ],
+                "template": "Arena_HomeIcon.png",
+                "count": 6
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "识别并点击主页右下方的竞技场图标",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": [
+            "Arena_Challenge",
+            "Arena_ChallengeImage",
+            "Arena_SelectStage"
+        ]
+    },
+    "Arena_Challenge": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    280,
+                    465,
+                    170,
+                    60
+                ],
+                "expected": "挑戰競技場"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "识别并点击挑战竞技场按钮",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": [
+            "Arena_SelectStage"
+        ]
+    },
+    "Arena_ChallengeImage": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    270,
+                    330,
+                    190,
+                    190
+                ],
+                "template": "Arena_Challenge.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "挑战竞技场文字 OCR 未命中时使用图片识别点击",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": [
+            "Arena_SelectStage"
+        ]
+    },
+    "Arena_SelectStage": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    0,
+                    180,
+                    720,
+                    800
+                ],
+                "template": "Arena_Stage1.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "识别并选择肖恩竞技场对手",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": [
+            "Arena_EnterChallenge"
+        ]
+    },
+    "Arena_EnterChallenge": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    500,
+                    1135,
+                    180,
+                    90
+                ],
+                "expected": "挑戰"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "点击挑戰按钮进入队伍选择",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": [
+            "Arena_ConfirmTeam"
+        ]
+    },
+    "Arena_ConfirmTeam": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    110,
+                    780,
+                    230,
+                    90
+                ],
+                "expected": "挑戰"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 2000,
+        "doc": "确认敌方技能预览并进入队伍配置",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": [
+            "Arena_TeamPickPage"
+        ]
+    },
+    "Arena_TeamPickPage": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    0,
+                    270,
+                    720,
+                    180
+                ],
+                "template": "Arena_MainTeamRow.png",
+                "count": 6
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}
+        },
+        "post_delay": 250,
+        "doc": "识别队伍配置页面后将队伍列表由左向右滑动（1/10）",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": ["Arena_ScrollTeamList02"]
+    },
+    "Arena_ScrollTeamList02": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList03"]
+    },
+    "Arena_ScrollTeamList03": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList04"]
+    },
+    "Arena_ScrollTeamList04": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList05"]
+    },
+    "Arena_ScrollTeamList05": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList06"]
+    },
+    "Arena_ScrollTeamList06": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList07"]
+    },
+    "Arena_ScrollTeamList07": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList08"]
+    },
+    "Arena_ScrollTeamList08": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList09"]
+    },
+    "Arena_ScrollTeamList09": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_ScrollTeamList10"]
+    },
+    "Arena_ScrollTeamList10": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "post_delay": 250,
+        "next": ["Arena_SelectSubLeader"]
+    },
+    "Arena_SelectSubLeader": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    642,
+                    357
+                ]
+            }
+        },
+        "post_delay": 1500,
+        "doc": "点击主队伍右侧闪烁的副队长选择框",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": [
+            "Arena_AdvancedFilter"
+        ]
+    },
+    "Arena_AdvancedFilter": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    625,
+                    20,
+                    90,
+                    90
+                ],
+                "template": "Arena_AdvancedFilter.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1500,
+        "doc": "点击战友选择页右上角的进阶副队长筛选图标",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage"],
+        "next": [
+            "Arena_RefreshSubLeader"
+        ]
+    },
+    "Arena_RefreshSubLeader": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    575,
+                    25,
+                    80,
+                    80
+                ],
+                "template": "Arena_RefreshSubLeader.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1000,
+        "doc": "刷新副队长候选选择",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage"],
+        "next": [
+            "Arena_ArenaBonus"
+        ]
+    },
+    "Arena_ArenaBonus": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    245,
+                    865,
+                    85,
+                    85
+                ],
+                "template": "Arena_ArenaBonus.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1000,
+        "doc": "选择 ARENA BONUS 副队长筛选条件",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage"],
+        "next": [
+            "Arena_CloseAdvancedFilter"
+        ]
+    },
+    "Arena_CloseAdvancedFilter": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    640,
+                    25,
+                    80,
+                    80
+                ],
+                "template": "Arena_CloseAdvancedFilter.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1500,
+        "doc": "点击筛选面板右上角的关闭按钮并返回战友选择",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage"],
+        "next": [
+            "Arena_SelectFilteredSubLeader"
+        ]
+    },
+    "Arena_SelectFilteredSubLeader": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    360,
+                    190
+                ]
+            }
+        },
+        "post_delay": 1500,
+        "doc": "固定点击 ARENA BONUS 筛选结果列表的顶部副队长位置",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage"],
+        "next": [
+            "Arena_ConfirmSubLeader"
+        ]
+    },
+    "Arena_ConfirmSubLeader": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": "選擇"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1500,
+        "doc": "点击副队长确认弹窗中的選擇按钮",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross", "Arena_SubLeaderEquipmentNotice"],
+        "next": [
+            "Arena_SubLeaderReady"
+        ]
+    },
+    "Arena_SubLeaderEquipmentNotice": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": ".*條件不符合.*",
+                "threshold": 0.2
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "next": [
+            "Arena_SubLeaderEquipmentConfirm"
+        ],
+        "doc": "偵測戰友龍刻裝備條件不符提示"
+    },
+    "Arena_SubLeaderEquipmentConfirm": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": "確定",
+                "threshold": 0.2
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 1000,
+        "next": [
+            "Arena_SelectAlternateSubLeader"
+        ],
+        "doc": "確認戰友裝備限制提示後改選下一列戰友"
+    },
+    "Arena_SelectAlternateSubLeader": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    360,
+                    350
+                ]
+            }
+        },
+        "post_delay": 1500,
+        "next": [
+            "Arena_ConfirmAlternateSubLeader"
+        ],
+        "doc": "首位戰友裝備不符合時固定選擇下一列戰友"
+    },
+    "Arena_ConfirmAlternateSubLeader": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": "選擇"
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1500,
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "Arena_SubLeaderEquipmentNoticeAfterAlternate"],
+        "next": [
+            "Arena_SubLeaderReady"
+        ],
+        "doc": "確認第二列戰友並等待隊伍頁返回"
+    },
+    "Arena_SubLeaderEquipmentNoticeAfterAlternate": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": ".*條件不符合.*",
+                "threshold": 0.2
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "next": [
+            "Arena_SubLeaderEquipmentConfirmStop"
+        ],
+        "doc": "第二位戰友仍不符合裝備條件時安全停止重試"
+    },
+    "Arena_SubLeaderEquipmentConfirmStop": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": "確定",
+                "threshold": 0.2
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 1000,
+        "next": [
+            "Arena_SubLeaderNoValidAlternate"
+        ],
+        "doc": "清除第二位戰友的裝備限制提示"
+    },
+    "Arena_SubLeaderNoValidAlternate": {
+        "recognition": {
+            "type": "DirectHit",
+            "param": {}
+        },
+        "action": {
+            "type": "StopTask",
+            "param": {}
+        },
+        "doc": "第二位戰友仍受裝備限制時停止，避免重複選取同一列"
+    },
+    "Arena_SubLeaderReady": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    0,
+                    270,
+                    720,
+                    180
+                ],
+                "template": "Arena_MainTeamRow.png",
+                "count": 6
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross", "Arena_SubLeaderEquipmentNotice"],
+        "timeout": 10000,
+        "doc": "副隊長確認完成後返回隊伍配置頁"
+    },
+    "Arena_WeeklyRankingResult": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    200,
+                    320,
+                    320,
+                    80
+                ],
+                "expected": "您的竞技场级别排名",
+                "threshold": 0.25
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "timeout": 3000,
+        "next": [
+            "Arena_WeeklyRankingConfirm"
+        ],
+        "doc": "识别上周竞技场级别排名弹窗标题"
+    },
+    "Arena_WeeklyRankingConfirm": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    230,
+                    810,
+                    260,
+                    110
+                ],
+                "expected": "确定",
+                "threshold": 0.25
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 1500,
+        "doc": "点击上周竞技场排名弹窗的确定按钮"
     }
 }

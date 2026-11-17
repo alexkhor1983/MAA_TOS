@@ -1,0 +1,123 @@
+{
+    "$__mpe_config_PopupHandler": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "PopupHandler",
+            "version": "v0.7.0"
+        }
+    },
+    "PopupHandler_AccountRiskTitle": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    120,
+                    720,
+                    260
+                ],
+                "expected": "帳號風險提示",
+                "threshold": 0.25
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "timeout": 3000,
+        "next": [
+            "PopupHandler_AccountRiskSkip"
+        ],
+        "doc": "確認帳號風險提示標題後，再檢查略過按鈕"
+    },
+    "PopupHandler_AccountRiskSkip": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    900,
+                    720,
+                    380
+                ],
+                "expected": "略過",
+                "threshold": 0.25
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {}
+        },
+        "post_delay": 1000,
+        "doc": "帳號風險提示中點擊略過按鈕"
+    },
+    "PopupHandler_BonusStageText": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "expected": "BONUS STAGE",
+                "threshold": 0.25
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "next": [
+            "PopupHandler_CloseCross"
+        ],
+        "doc": "偵測 BONUS STAGE 字樣後關閉彈窗"
+    },
+    "PopupHandler_BonusStageImage": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "template": "PopupHandler_BonusStage.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "next": [
+            "PopupHandler_CloseCross"
+        ],
+        "doc": "以 BONUS STAGE 圖像作為 OCR 未命中時的備援識別"
+    },
+    "PopupHandler_CloseCross": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [
+                    0,
+                    0,
+                    720,
+                    1280
+                ],
+                "template": "PopupHandler_CloseCross.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true
+            }
+        },
+        "post_delay": 1000,
+        "doc": "點擊 BONUS STAGE 彈窗的叉號；亦作為其他卡住彈窗的叉號備援"
+    }
+}
