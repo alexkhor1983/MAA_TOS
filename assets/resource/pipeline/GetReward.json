@@ -15,20 +15,26 @@
             "type": "DoNothing",
             "param": {}
         },
-        "doc": "處理月卡與簽到彈窗，或在主畫面可用時直接開啟側邊欄",
-        "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
-            "[JumpBack]PopupHandler_CloseCross",
-            "GetReward_CloseCross",
-            "GetReward_SignInReward",
-            "GetReward_Confirm",
-            "GetReward_OpenSideBar"
-        ],
-        "timeout": 15000,
-        "on_error": [
-            "GetReward_MonthlyPassDone"
-        ]
+        "doc": "先檢查月禮包頁面，再處理中斷彈窗並等待主畫面",
+        "next": ["GetReward_MonthlyPassCheck"]
+    },
+    "GetReward_MonthlyPassCheck": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [0, 0, 720, 1280],
+                "template": "GetReward_MonthlyPassTitle.png",
+                "count": 4
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "timeout": 5000,
+        "next": ["GetReward_CloseCross"],
+        "on_error": ["GetReward_HandleInterruptions"],
+        "doc": "以提供的瘋頭月禮包標題圖確認月禮包頁面"
     },
     "GetReward_CloseCross": {
         "recognition": {
@@ -55,19 +61,9 @@
         },
         "post_delay": 1500,
         "timeout": 8000,
-        "doc": "全螢幕 FeatureMatch 動態定位圓形或月禮包方形叉號按鈕並點擊；命中後繼續掃描其他彈窗",
-        "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
-            "[JumpBack]PopupHandler_CloseCross",
-            "GetReward_CloseCross",
-            "GetReward_SignInReward",
-            "GetReward_Confirm",
-            "GetReward_OpenSideBar"
-        ],
-        "on_error": [
-            "GetReward_MonthlyPassDone"
-        ]
+        "doc": "點擊月禮包關閉按鈕後重新確認標題是否仍在畫面",
+        "next": ["GetReward_MonthlyPassCheck"],
+        "on_error": ["GetReward_HandleInterruptions"]
     },
     "GetReward_SignInReward": {
         "recognition": {
@@ -96,16 +92,8 @@
         },
         "post_delay": 500,
         "doc": "辨識簽到獎賞/签到奖励文字，導向確定按鈕點擊",
-        "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
-            "[JumpBack]PopupHandler_CloseCross",
-            "GetReward_Confirm",
-            "GetReward_OpenSideBar"
-        ],
-        "on_error": [
-            "GetReward_MonthlyPassDone"
-        ]
+        "next": ["GetReward_Confirm"],
+        "on_error": ["GetReward_HandleInterruptions"]
     },
     "GetReward_Confirm": {
         "recognition": {
@@ -130,20 +118,9 @@
         "post_delay": 1500,
         "timeout": 5000,
         "doc": "辨識並點擊確定按鈕",
-        "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
-            "[JumpBack]PopupHandler_CloseCross",
-            "GetReward_CloseCross",
-            "GetReward_SignInReward",
-            "GetReward_Confirm",
-            "GetReward_OpenSideBar"
-        ],
-        "on_error": [
-            "GetReward_MonthlyPassDone"
-        ]
+        "next": ["GetReward_HandleInterruptions"]
     },
-    "GetReward_MonthlyPassDone": {
+    "GetReward_HandleInterruptions": {
         "recognition": {
             "type": "DirectHit",
             "param": {}
@@ -152,16 +129,36 @@
             "type": "DoNothing",
             "param": {}
         },
-        "doc": "月卡與簽到獎勵處理完畢，開始領取獎賞頁面的額外獎勵",
+        "doc": "反覆處理登入期間的中斷彈窗，直到辨識到主畫面",
         "next": [
             "[JumpBack]PopupHandler_AccountRiskTitle",
             "[JumpBack]PopupHandler_BonusStageText",
-            "GetReward_OpenSideBar"
+            "[JumpBack]PopupHandler_BonusStageImage",
+            "[JumpBack]PopupHandler_CloseCross",
+            "GetReward_SignInReward",
+            "GetReward_Confirm",
+            "GetReward_HomeBattle"
         ],
-        "timeout": 8000,
-        "on_error": [
-            "GetReward_Done"
-        ]
+        "timeout": 30000,
+        "on_error": ["GetReward_Stop"]
+    },
+    "GetReward_HomeBattle": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [0, 0, 720, 1280],
+                "template": "StartGame_HomeBattle.png",
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "timeout": 30000,
+        "next": ["GetReward_OpenSideBar"],
+        "on_error": ["GetReward_Stop"],
+        "doc": "只有確認 StartGame_HomeBattle 主畫面後才開始開啟側邊欄"
     },
     "GetReward_OpenSideBar": {
         "recognition": {
@@ -297,7 +294,7 @@
             "[JumpBack]PopupHandler_BonusStageText",
             "GetReward_Done"
         ],
-        "on_error": ["GetReward_Done"],
+        
         "doc": "關閉自動領取後的獎賞確認彈窗"
     },
     "GetReward_AutoCollectComplete": {
@@ -328,9 +325,6 @@
         "next": [
             "[JumpBack]PopupHandler_AccountRiskTitle",
             "[JumpBack]PopupHandler_BonusStageText",
-            "GetReward_Done"
-        ],
-        "on_error": [
             "GetReward_Done"
         ]
     },
@@ -367,7 +361,6 @@
         },
         "post_delay": 1000,
         "next": ["GetReward_Stop"],
-        "on_error": ["GetReward_Stop"],
         "doc": "點擊底部 BATTLE 按鈕返回主畫面"
     },
     "GetReward_Stop": {

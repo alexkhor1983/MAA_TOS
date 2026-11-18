@@ -30,7 +30,7 @@
             "Arena_ArenaBonus",
             "Arena_AdvancedFilter",
             "Arena_TeamPickPage",
-            "Arena_ConfirmTeam",
+            "Arena_ConfirmEnermySkill",
             "Arena_EnterChallenge",
             "Arena_SelectStage",
             "Arena_Challenge",
@@ -160,10 +160,10 @@
         "doc": "点击挑戰按钮进入队伍选择",
         "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
-            "Arena_ConfirmTeam"
+            "Arena_ConfirmEnermySkill"
         ]
     },
-    "Arena_ConfirmTeam": {
+    "Arena_ConfirmEnermySkill": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -189,16 +189,10 @@
     },
     "Arena_TeamPickPage": {
         "recognition": {
-            "type": "FeatureMatch",
+            "type": "OCR",
             "param": {
-                "roi": [
-                    0,
-                    270,
-                    720,
-                    180
-                ],
-                "template": "Arena_MainTeamRow.png",
-                "count": 6
+                "roi": [0, 0, 720, 1280],
+                "expected": "生命力"
             }
         },
         "action": {

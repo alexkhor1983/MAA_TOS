@@ -50,20 +50,6 @@
             ]
         },
         {
-            "name": "刷公会战",
-            "entry": "GuildBattleFarm_Start",
-            "option": [
-                "关卡选择"
-            ]
-        },
-        {
-            "name": "刷灵魂",
-            "entry": "SoulFarm_Start",
-            "option": [
-                "关卡选择"
-            ]
-        },
-        {
             "name": "退出游戏",
             "entry": "ExitGame_Start"
         }
