@@ -16,7 +16,9 @@
             "param": {}
         },
         "doc": "先檢查月禮包頁面，再處理中斷彈窗並等待主畫面",
-        "next": ["GetReward_MonthlyPassCheck"]
+        "timeout": 5000,
+        "next": ["GetReward_MonthlyPassCheck"],
+        "on_error": ["GetReward_HandleInterruptions"]
     },
     "GetReward_MonthlyPassCheck": {
         "recognition": {
@@ -130,11 +132,8 @@
             "param": {}
         },
         "doc": "反覆處理登入期間的中斷彈窗，直到辨識到主畫面",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
-            "[JumpBack]PopupHandler_BonusStageImage",
-            "[JumpBack]PopupHandler_CloseCross",
             "GetReward_SignInReward",
             "GetReward_Confirm",
             "GetReward_HomeBattle"
@@ -183,9 +182,8 @@
         "post_delay": 500,
         "timeout": 8000,
         "doc": "點擊主畫面右上角圖示以開啟側邊欄",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText"],
         "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
             "GetReward_RewardIcon"
         ],
         "on_error": [
@@ -215,9 +213,8 @@
         "post_delay": 1000,
         "timeout": 8000,
         "doc": "點擊側邊欄的獎賞圖示以開啟獎賞頁面",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText"],
         "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
             "GetReward_AutoCollect"
         ],
         "on_error": [
@@ -247,9 +244,8 @@
         "post_delay": 750,
         "timeout": 5000,
         "doc": "點擊獎賞頁面的自動領取按鈕",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText"],
         "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
             "GetReward_CollectConfirmation",
             "GetReward_AutoCollectComplete"
         ],
@@ -289,9 +285,8 @@
             "param": {}
         },
         "post_delay": 750,
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText"],
         "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
             "GetReward_Done"
         ],
         
@@ -322,9 +317,8 @@
         "post_delay": 300,
         "timeout": 5000,
         "doc": "等待自動領取按鈕消失或超時，並處理期間出現的彈窗",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText"],
         "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
             "GetReward_Done"
         ]
     },
@@ -338,9 +332,8 @@
             "param": {}
         },
         "timeout": 8000,
+        "interrupt": ["PopupHandler_AccountRiskTitle", "PopupHandler_BonusStageText"],
         "next": [
-            "[JumpBack]PopupHandler_AccountRiskTitle",
-            "[JumpBack]PopupHandler_BonusStageText",
             "GetReward_ReturnHome"
         ],
         "on_error": ["GetReward_Stop"],
