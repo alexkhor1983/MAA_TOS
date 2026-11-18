@@ -32,6 +32,13 @@ Use the project’s MaaFramework runner to verify automation. Do not inject game
 5. For an OCR phrase embedded in a longer detected line, use a regex expected value only after checking this framework version's OCR behavior in the log. In this project, `.*條件不符合.*` with a low OCR confidence threshold matched the full warning line.
 6. Verify the follow-up state after the action, not just the recognizer hit. Confirm that the next node was entered and its expected UI was recognized.
 
+## Resource-load failures: efficient diagnosis
+
+1. Start with `install/debug/maa.log`, not the generic MFA exception. Filter native `[ERR]` lines around the failure timestamp and show only relevant lines. The log can contain NUL bytes: decode as UTF-8 and remove NULs before filtering. Avoid dumping the full log or reading old entries.
+2. Check the installed MaaFramework version and compare source and installed pipeline hashes before editing or copying; preserve unrelated changes. In the observed v5.0.4 installation, `[JumpBack]` was treated as a missing node; it requires v5.1 or later. Existing `interrupt` lists are compatible with v5.0.
+3. JSON parsing and reference checks do not prove native pipeline validity. Use explicit UTF-8 when reading Chinese JSON in PowerShell (`Get-Content -Encoding UTF8`). If `maafw-cli pipeline validate` repeatedly returns a generic failure, stop retrying it and inspect the native error instead.
+4. Verify resource loading without game actions by using the installed MaaFramework native API to create a resource, post each configured bundle, wait for its load job, and destroy the resource. In the observed installation, status `3000` was success and `4000` failure. Check both bundles; a plugin-directory access warning alone did not prevent successful loading. Resource loading does not verify live recognition or actions.
+
 ## Turn failures into reusable knowledge
 
 - Keep a short attempt record: starting screen, command/entry node, expected recognition, actual OCR/reco/log result, and resulting screen.
