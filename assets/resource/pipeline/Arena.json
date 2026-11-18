@@ -30,6 +30,7 @@
             "Arena_ArenaBonus",
             "Arena_AdvancedFilter",
             "Arena_TeamPickPage",
+            "Arena_TeamPickPageImage",
             "Arena_ConfirmEnermySkill",
             "Arena_EnterChallenge",
             "Arena_SelectStage",
@@ -184,15 +185,16 @@
         "doc": "确认敌方技能预览并进入队伍配置",
         "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
-            "Arena_TeamPickPage"
+            "Arena_TeamPickPage",
+            "Arena_TeamPickPageImage"
         ]
     },
     "Arena_TeamPickPage": {
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [0, 0, 720, 1280],
-                "expected": "生命力"
+                "roi": [80, 1138, 160, 65],
+                "expected": "競技場關卡"
             }
         },
         "action": {
@@ -200,7 +202,25 @@
             "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}
         },
         "post_delay": 250,
-        "doc": "识别队伍配置页面后将队伍列表由左向右滑动（1/10）",
+        "doc": "识别队伍配置页面底部的競技場關卡文字后将队伍列表由左向右滑动（1/10）",
+        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
+        "next": ["Arena_ScrollTeamList02"]
+    },
+    "Arena_TeamPickPageImage": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [80, 1138, 160, 65],
+                "template": "Arena_TeamPickPage.png",
+                "threshold": 0.8
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}
+        },
+        "post_delay": 250,
+        "doc": "OCR未命中時以隊伍配置頁模板識別後滑動隊伍列表（1/10）",
         "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": ["Arena_ScrollTeamList02"]
     },
