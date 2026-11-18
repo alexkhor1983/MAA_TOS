@@ -26,7 +26,7 @@
                 "y": 0
             }
         },
-        "timeout": 60000,
+        "timeout": 20000,   
         "on_error": [
             "StartGame_LogoTimeout"
         ],
@@ -34,8 +34,23 @@
             "PopupHandler_AccountRiskTitle"
         ],
         "next": [
+            "StartGame_HomeBattle",
             "StartGame_MadHeadCopyright"
         ]
+    },
+    "StartGame_HomeBattle": {
+        "recognition": {
+            "type": "FeatureMatch",
+            "param": {
+                "roi": [0, 0, 720, 1280],
+                "template": "StartGame_HomeBattle.png"
+            }
+        },
+        "action": {
+            "type": "DoNothing",
+            "param": {}
+        },
+        "doc": "Already on the home screen; finish the start game task"
     },
     "StartGame_MadHeadCopyright": {
         "recognition": {
@@ -97,7 +112,7 @@
             "type": "StopTask",
             "param": {}
         },
-        "doc": "等待一分鐘仍未出現標題圖示時跳過啟動任務"
+        "doc": "等待20秒仍未出現標題圖示時跳過啟動任務"
     },
     "StartGame_LoadingPage": {
         "recognition": {
@@ -309,6 +324,7 @@
             "StartGame_LoginFailed",
             "StartGame_CloseNotice",
             "StartGame_MapPage",
+            "StartGame_HomeBattle",
             "StartGame_HomePage",
             "StartGame_TouchStart"
         ]
