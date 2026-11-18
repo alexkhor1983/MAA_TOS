@@ -16,11 +16,22 @@ Use the project’s MaaFramework runner to verify automation. Do not inject game
 - `uvx --offline maafw-cli` also failed in the verified Codex runner because its shared uv lock/interpreter was inaccessible. Do not repeatedly retry it without changing the runner context.
 - MaaPiCli emitted a plugin-directory “Access is denied” warning in the verified environment, but continued to run the MAA task. Check whether controller connection and task execution succeed before treating that warning as fatal.
 
+## Source and runtime pipeline synchronization
+
+`assets/resource/pipeline/` is the editable source; `install/resource/pipeline/` is the resource copy used by the installed/debug runner in this checkout. Editing the source alone does not update the runtime copy, and an old runtime copy can make a correct source change appear ineffective.
+
+After every pipeline edit intended for a local MaaPiCli/debug run:
+
+1. Copy each changed pipeline JSON from `assets/resource/pipeline/` to the matching path under `install/resource/pipeline/` (for example, `Arena.json`). Do not copy unrelated resource files or overwrite user changes without checking them.
+2. Parse both files as UTF-8 JSON and compare their SHA-256 hashes; require both to succeed and match before running. If the installed copy has independent changes, reconcile them deliberately rather than blindly overwriting them.
+3. Confirm the runner uses the expected `install/` resource directory. After the run, inspect the action parameters in `install/debug/maa.log`; a successful action using old parameters is evidence of a stale runtime copy, not a swipe failure.
+4. Keep the source/runtime synchronization step separate from building the application: rebuild only if code, native libraries, or packaged resources require it. For pipeline-only changes, syncing and validating the runtime resource copy is sufficient.
+
 ## Before a run
 
 1. Read `assets/interface.json` and the relevant pipeline to identify the exact task entry and resource label.
 2. Back up `install/config/maa_pi_config.json` before changing task selection for MaaPiCli. Preserve controller, resource, and task option fields. MaaPiCli expects each task's `option` to be an array; `{}` is invalid.
-3. If the task was changed in `assets/resource/pipeline/`, copy that pipeline into `install/resource/pipeline/` before launching MaaPiCli. Parse the JSON and compare source/installed hashes.
+3. Complete the source/runtime synchronization procedure above before launching MaaPiCli. Never assume an edit under `assets/` is automatically reflected under `install/`.
 4. Do not assume the emulator is at the task's starting screen. Use the current run logs or MaaFramework's own recognition flow to establish its state. Avoid launching a long task from an unexpected page.
 
 ## Run and inspect

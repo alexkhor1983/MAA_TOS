@@ -199,7 +199,7 @@
         },
         "action": {
             "type": "Swipe",
-            "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}
+            "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}
         },
         "post_delay": 250,
         "doc": "识别队伍配置页面底部的競技場關卡文字后将队伍列表由左向右滑动（1/10）",
@@ -212,12 +212,12 @@
             "param": {
                 "roi": [80, 1138, 160, 65],
                 "template": "Arena_TeamPickPage.png",
-                "threshold": 0.8
+                "threshold": 0.5
             }
         },
         "action": {
             "type": "Swipe",
-            "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}
+            "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}
         },
         "post_delay": 250,
         "doc": "OCR未命中時以隊伍配置頁模板識別後滑動隊伍列表（1/10）",
@@ -226,55 +226,55 @@
     },
     "Arena_ScrollTeamList02": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList03"]
     },
     "Arena_ScrollTeamList03": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList04"]
     },
     "Arena_ScrollTeamList04": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList05"]
     },
     "Arena_ScrollTeamList05": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList06"]
     },
     "Arena_ScrollTeamList06": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList07"]
     },
     "Arena_ScrollTeamList07": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList08"]
     },
     "Arena_ScrollTeamList08": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList09"]
     },
     "Arena_ScrollTeamList09": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_ScrollTeamList10"]
     },
     "Arena_ScrollTeamList10": {
         "recognition": {"type": "DirectHit", "param": {}},
-        "action": {"type": "Swipe", "param": {"begin": [40, 540], "end": [360, 540], "duration": 250}},
+        "action": {"type": "Swipe", "param": {"begin": [149,540,1,1], "end": [357,546,1,1], "duration": 250}},
         "post_delay": 250,
         "next": ["Arena_SelectSubLeader"]
     },
