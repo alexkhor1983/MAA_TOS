@@ -24,6 +24,10 @@
         },
         "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross", "Arena_SubLeaderEquipmentNotice"],
         "next": [
+            "Arena_HomeIcon",
+            "Arena_CheckStage1Rank",
+            "Arena_Challenge",
+            "Arena_ChallengeImage",
             "Arena_ConfirmSubLeader",
             "Arena_CloseAdvancedFilter",
             "Arena_RefreshSubLeader",
@@ -32,11 +36,7 @@
             "Arena_TeamPickPage",
             "Arena_TeamPickPageImage",
             "Arena_ConfirmEnermySkill",
-            "Arena_EnterChallenge",
-            "Arena_SelectStage",
-            "Arena_Challenge",
-            "Arena_ChallengeImage",
-            "Arena_HomeIcon"
+            "Arena_EnterChallenge"
         ]
     },
     "Arena_HomeIcon": {
@@ -44,13 +44,13 @@
             "type": "FeatureMatch",
             "param": {
                 "roi": [
-                    500,
-                    700,
-                    220,
-                    350
+                    595,
+                    813,
+                    75,
+                    71
                 ],
                 "template": "Arena_HomeIcon.png",
-                "count": 6
+                "count": 4
             }
         },
         "action": {
@@ -63,7 +63,7 @@
         "next": [
             "Arena_Challenge",
             "Arena_ChallengeImage",
-            "Arena_SelectStage"
+            "Arena_CheckStage1Rank"
         ]
     },
     "Arena_Challenge": {
@@ -86,9 +86,7 @@
         "post_delay": 2000,
         "doc": "识别并点击挑战竞技场按钮",
         "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
-        "next": [
-            "Arena_SelectStage"
-        ]
+        "next": ["Arena_CheckStage1Rank"]
     },
     "Arena_ChallengeImage": {
         "recognition": {
@@ -111,20 +109,13 @@
         "post_delay": 2000,
         "doc": "挑战竞技场文字 OCR 未命中时使用图片识别点击",
         "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
-        "next": [
-            "Arena_SelectStage"
-        ]
+        "next": ["Arena_CheckStage1Rank"]
     },
     "Arena_SelectStage": {
         "recognition": {
             "type": "FeatureMatch",
             "param": {
-                "roi": [
-                    0,
-                    180,
-                    720,
-                    800
-                ],
+                "roi": [0, 180, 720, 800],
                 "template": "Arena_Stage1.png",
                 "count": 4
             }
@@ -134,7 +125,7 @@
             "param": {}
         },
         "post_delay": 2000,
-        "doc": "识别并选择肖恩竞技场对手",
+        "doc": "确认第一关排名不包含00后选择关卡；排名包含00时跳过",
         "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross"],
         "next": [
             "Arena_EnterChallenge"
@@ -439,7 +430,7 @@
         },
         "post_delay": 1500,
         "doc": "点击副队长确认弹窗中的選擇按钮",
-        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross", "Arena_SubLeaderEquipmentNotice"],
+        "interrupt": ["Arena_SubLeaderEquipmentNotice"],
         "next": [
             "Arena_SubLeaderReady"
         ]
@@ -599,25 +590,95 @@
     },
     "Arena_SubLeaderReady": {
         "recognition": {
-            "type": "FeatureMatch",
+            "type": "OCR",
             "param": {
-                "roi": [
-                    0,
-                    270,
-                    720,
-                    180
-                ],
-                "template": "Arena_MainTeamRow.png",
-                "count": 6
+                "roi": [500, 1152, 189, 85],
+                "expected": "確定",
+                "threshold": 0.2
             }
         },
         "action": {
-            "type": "DoNothing",
-            "param": {}
+            "type": "Click",
+            "param": {"target": true}
         },
-        "interrupt": ["PopupHandler_AccountRiskTitle", "Arena_WeeklyRankingResult", "PopupHandler_BonusStageText", "PopupHandler_BonusStageImage", "PopupHandler_CloseCross", "Arena_SubLeaderEquipmentNotice"],
-        "timeout": 10000,
-        "doc": "副隊長確認完成後返回隊伍配置頁"
+        "post_delay": 2000,
+        "next": ["Arena_FightScroll"],
+        "doc": "副隊長選擇完成後點擊確定並進入戰鬥"
+    },
+    "Arena_FightScroll": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {
+            "type": "Swipe",
+            "param": {"begin": [61, 517, 1, 1], "end": [58, 684, 1, 1], "duration": 250}
+        },
+        "max_hit": 3000,
+        "timeout": 20000,
+        "on_error": ["Arena_FightTimeoutStop"],
+        "post_delay": 250,
+        "next": ["Arena_BattleEndBackToStageSelection", "Arena_FightScroll"],
+        "doc": "戰鬥中循環滑動並等待結算返回按鈕，最多3000次（約25分鐘總上限）"
+    },
+    "Arena_BattleEndBackToStageSelection": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [75, 1132, 93, 90],
+                "template": "Arena_BackToStageSelection.png",
+                "threshold": 0.7
+            }
+        },
+        "action": {"type": "Click", "param": {"target": true}},
+        "post_delay": 2000,
+        "next": ["Arena_CheckStage2Rank"],
+        "doc": "勝利後點擊返回關卡選擇按鈕並依序進入下一關"
+    },
+    "Arena_SelectStage2": {
+        "recognition": {"type": "FeatureMatch", "param": {"roi": [0, 180, 720, 800], "template": "Arena_Stage2.png", "count": 4}},
+        "action": {"type": "Click", "param": {}},
+        "max_hit": 1,
+        "post_delay": 2000,
+        "next": ["Arena_EnterChallenge"],
+        "doc": "排名不包含00時選擇第二關；包含00則跳過此關"
+    },
+    "Arena_SelectStage3": {
+        "recognition": {"type": "FeatureMatch", "param": {"roi": [0, 180, 720, 800], "template": "Arena_Stage3.png", "count": 4}},
+        "action": {"type": "Click", "param": {}},
+        "max_hit": 1,
+        "post_delay": 2000,
+        "next": ["Arena_EnterChallenge"],
+        "doc": "排名不包含00時選擇第三關；包含00則跳過此關"
+    },
+    "Arena_SelectStage4": {
+        "recognition": {"type": "FeatureMatch", "param": {"roi": [0, 180, 720, 800], "template": "Arena_Stage4.png", "count": 4}},
+        "action": {"type": "Click", "param": {}},
+        "max_hit": 1,
+        "post_delay": 2000,
+        "next": ["Arena_EnterChallenge"],
+        "doc": "排名不包含00時選擇第四關；包含00則跳過此關"
+    },
+    "Arena_SelectStage5": {
+        "recognition": {"type": "FeatureMatch", "param": {"roi": [0, 180, 720, 800], "template": "Arena_Stage5.png", "count": 4}},
+        "action": {"type": "Click", "param": {}},
+        "max_hit": 1,
+        "post_delay": 2000,
+        "next": ["Arena_EnterChallenge"],
+        "doc": "排名不包含00時選擇第五關；包含00則跳過此關"
+    },
+    "Arena_CheckStage1Rank": {"recognition": {"type": "DirectHit", "param": {}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_SkipStage1If00", "Arena_SelectStage"]},
+    "Arena_SkipStage1If00": {"recognition": {"type": "OCR", "param": {"roi": [589, 346, 83, 41], "expected": ".*00.*", "threshold": 0.2}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_CheckStage2Rank"]},
+    "Arena_CheckStage2Rank": {"recognition": {"type": "DirectHit", "param": {}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_SkipStage2If00", "Arena_SelectStage2"]},
+    "Arena_SkipStage2If00": {"recognition": {"type": "OCR", "param": {"roi": [343, 509, 78, 37], "expected": ".*00.*", "threshold": 0.2}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_CheckStage3Rank"]},
+    "Arena_CheckStage3Rank": {"recognition": {"type": "DirectHit", "param": {}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_SkipStage3If00", "Arena_SelectStage3"]},
+    "Arena_SkipStage3If00": {"recognition": {"type": "OCR", "param": {"roi": [592, 669, 85, 41], "expected": ".*00.*", "threshold": 0.2}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_CheckStage4Rank"]},
+    "Arena_CheckStage4Rank": {"recognition": {"type": "DirectHit", "param": {}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_SkipStage4If00", "Arena_SelectStage4"]},
+    "Arena_SkipStage4If00": {"recognition": {"type": "OCR", "param": {"roi": [345, 829, 85, 46], "expected": ".*00.*", "threshold": 0.2}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_CheckStage5Rank"]},
+    "Arena_CheckStage5Rank": {"recognition": {"type": "DirectHit", "param": {}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_SkipStage5If00", "Arena_SelectStage5"]},
+    "Arena_SkipStage5If00": {"recognition": {"type": "OCR", "param": {"roi": [582, 996, 97, 44], "expected": ".*00.*", "threshold": 0.2}}, "action": {"type": "DoNothing", "param": {}}, "next": ["Arena_AllStagesComplete"]},
+    "Arena_AllStagesComplete": {"recognition": {"type": "DirectHit", "param": {}}, "action": {"type": "StopTask", "param": {}}, "doc": "五個關卡排名均包含00時停止任務"},
+    "Arena_FightTimeoutStop": {
+        "recognition": {"type": "DirectHit", "param": {}},
+        "action": {"type": "StopTask", "param": {}},
+        "doc": "戰鬥滑動達到總上限仍未出現結算按鈕時停止任務"
     },
     "Arena_WeeklyRankingResult": {
         "recognition": {
